@@ -1,5 +1,8 @@
 # Django settings for polybanking project.
 
+from os.path import abspath,  dirname, join, normpath
+DJANGO_ROOT = dirname(abspath(__file__)) + '/../'
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -94,9 +97,7 @@ ROOT_URLCONF = 'app.urls'
 WSGI_APPLICATION = 'app.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    normpath(join(DJANGO_ROOT, 'templates')) + '/'
 )
 
 INSTALLED_APPS = (
@@ -144,6 +145,15 @@ LOGGING = {
         },
     }
 }
+
+AUTHENTICATION_BACKENDS = ('tequila.Backend', )
+LOGIN_URL = '/login'
+
+TEQUILA_SERVER = 'https://tequila.epfl.ch'  # Url of tequila server, for API
+TEQUILA_SERVER2 = 'https://tequila.epfl.ch'  # Url of tequila server, for redirection
+TEQUILA_SERVICE = 'PolyBanking'  # Title used in tequila
+TEQUILA_AUTOCREATE = True  # Auto create users ?
+TEQUILA_FAILURE = '/'  # Where to redirect user if there is a problem
 
 try:
     from settingsLocal import *
