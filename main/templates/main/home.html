@@ -1,1 +1,10 @@
-Test
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{block.super}} :: {% trans "Home" %}{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Welcome !" %}</h2>
+
+{% endblock %}

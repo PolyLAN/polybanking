@@ -54,9 +54,9 @@ class Backend:
             if settings.TEQUILA_AUTOCREATE:
                 user = User()
                 user.username = sciper
-                user.first_name = firstName
-                user.last_name = name
-                user.email = email
+                user.first_name = firstName[:30]
+                user.last_name = name[:30]
+                user.email = email[:75]
                 user.save()
             else:
                 user = None
