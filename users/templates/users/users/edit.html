@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{{block.super}} :: {% trans "User management" %} :: {% trans "Edition" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-users').addClass('active');</script>
+
+<h2>{% trans "User management" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>
+  {% if form.instance.pk %}
+    <li><a href="{% url 'users.views.show' form.instance.pk %}"><i class="fa fa-user"></i> {{form.instance}}</a></li>
+  {% endif %}
+  <li class="active"><i class="fa fa-pencil"></i> {% if form.instance.pk %}{% trans "Edition" %}{% else %}{% trans "New user" %}{% endif %}</li>
+
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Edition of an user" %}</h3>
+        </div>
+        <div class="panel-body">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+
+                <div class="row-fluid box-section" style="text-align: right;">
+                    <a href="{% url 'users.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
+                    <input type="submit" class="btn btn-primary" value="{% trans "Save" %}">
+                </div>
+
+            </form>
+            
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

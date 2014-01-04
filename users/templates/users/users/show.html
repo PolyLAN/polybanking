@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{{block.super}} :: {% trans "User management" %} :: {% trans "Details" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-users').addClass('active');</script>
+
+<h2>{% trans "User management" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>
+  <li class="active"><i class="fa fa-user"></i> {{object}}</a></li>
+
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Details of an user" %}</h3>
+        </div>
+        <div class="panel-body">
+
+          <form>
+              
+              <div class="form-group">
+                <label>{% trans "Username" %}</label>
+                <p class="form-control-static">{{object.username}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "First name" %}</label>
+                <p class="form-control-static">{{object.first_name}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Last name" %}</label>
+                <p class="form-control-static">{{object.last_name}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Email" %}</label>
+                <p class="form-control-static">{{object.email}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Last login" %}</label>
+                <p class="form-control-static">{{object.last_login|date}} {{object.last_login|time}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Is admin ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.is_superuser|yesno:"success,danger"}}">{{object.is_superuser|yesno}}</span></p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Can create configs ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.is_staff|yesno:"success,danger"}}">{{object.is_staff|yesno}}</span></p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Is active ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.is_active|yesno:"success,danger"}}">{{object.is_active|yesno}}</span></p>
+              </div>
+
+          </form>
+
+  
+
+            <div class="row-fluid box-section" style="text-align: right;">
+                <a href="{% url 'users.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
+                <a href="{% url 'users.views.delete' object.pk %}" class="btn btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');"><i class="glyphicon-remove glyphicon"></i> {% trans "Delete" %}</a>
+                <a href="{% url 'users.views.edit' object.pk %}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
+            </div>            
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,6 +16,21 @@
     <!-- Add custom CSS here -->
     <link href="{{MEDIA_URL}}sb-admin/css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="{{MEDIA_URL}}sb-admin/font-awesome/css/font-awesome.min.css">
+    <!--<link href="{{MEDIA_URL}}sb-admin/vendors/datatables/css/jquery.dataTables.css" rel="stylesheet" media="screen">-->
+    <link href="{{MEDIA_URL}}sb-admin/vendors/BS3/assets/css/datatables.css" rel="stylesheet" media="screen">
+
+     <!-- JavaScript -->
+    <script src="{{MEDIA_URL}}sb-admin/js/jquery-1.10.2.js"></script>
+    <script src="{{MEDIA_URL}}sb-admin/js/bootstrap.js"></script>
+    <script src="{{MEDIA_URL}}sb-admin/vendors/datatables/js/jquery.dataTables.js"></script>
+    <!--<script src="{{MEDIA_URL}}sb-admin/DT_bootstrap.js"></script>-->
+    <script src="{{MEDIA_URL}}sb-admin/vendors/BS3/assets/js/datatables.js"></script>
+
+    <script type="text/javascript">
+      /* Table initialisation */
+      
+      </script>
+
   </head>
 
   <body>
@@ -25,7 +41,7 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">{% trans "Change nav" %}</span>
+            <span class="sr-only">{% trans "Toogle navbar" %}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -36,7 +52,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-            <li><a href="{% url 'main.views.home' %}"><i class="fa fa-dashboard"></i> {% trans "Home" %}</a></li>
+            <li id="nav-home"><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+            {% if user.is_superuser %}<li id="nav-users"><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>{% endif %}
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
@@ -52,17 +69,21 @@
 
       <div id="page-wrapper">
 
+        {% bootstrap_messages %}
+
         {% block content %}
 
         {% endblock %}
 
       </div><!-- /#page-wrapper -->
 
+      <div class="copy">&copy; Maximilien Cuony - 2013 - <a href="http://agepoly.epfl.ch">AGEPoly</a>/<a href="http://polylan.ch">PolyLAN</a></div>
+
     </div><!-- /#wrapper -->
 
-    <!-- JavaScript -->
-    <script src="{{MEDIA_URL}}sb-admin/js/jquery-1.10.2.js"></script>
-    <script src="{{MEDIA_URL}}sb-admin/js/bootstrap.js"></script>
+
+
+   
 
   </body>
 </html>

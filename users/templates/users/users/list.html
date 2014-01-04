@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{block.super}} :: {% trans "User management" %} :: {% trans "List" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-users').addClass('active');</script>
+
+<h2>{% trans "User management" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li class="active"><i class="fa fa-user"></i> {% trans "Users" %}</li>
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "List of users" %}</h3>
+        </div>
+        <div class="panel-body">
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-to-sort">
+                <thead>
+                    <tr>
+                        <th>{% trans "Sciper" %}</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Email" %}</th>
+                        <th>{% trans "Admin ?" %}</th>
+                        <th>{% trans "Can create config ?" %}</th>
+                        <th>{% trans "Actif ?" %}</th>
+                        <th style="width: 170px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for elem in list %}
+                        <tr>
+                            <td><a href="{% url 'users.views.show' elem.pk %}">{{elem.username}}</a></td>
+                            <td>{{elem.first_name}} {{elem.last_name}}</td>
+                            <td>{{elem.email}}</td>
+                            <td><span class="label label-{{elem.is_superuser|yesno:"success,danger"}}">{{elem.is_superuser|yesno}}</span></td>
+                            <td><span class="label label-{{elem.is_staff|yesno:"success,danger"}}">{{elem.is_staff|yesno}}</span></td>
+                            <td><span class="label label-{{elem.is_active|yesno:"success,danger"}}">{{elem.is_active|yesno}}</span></td>
+                            <td>
+                                <a href="{% url 'users.views.delete' elem.pk %}" class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');"><i class="glyphicon-remove glyphicon"></i> {% trans "Delete" %}</a>
+                                <a href="{% url 'users.views.edit' elem.pk %}" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+
+            <div class="row-fluid box-section" style="text-align: right;">
+                <a href="{% url 'users.views.edit' '0' %}" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> {% trans "Add" %}</a>
+            </div>
+
+        </div>
+    </div>
+
+    
+
+</div>
+
+{% endblock %}
