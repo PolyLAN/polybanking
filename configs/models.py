@@ -1,0 +1,119 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+import uuid
+import datetime
+import random
+import hashlib
+
+
+class Config(models.Model):
+    """Represent a website configuration"""
+
+    name = models.CharField(max_length=255)
+
+    active = models.BooleanField(default=True)
+    admin_enable = models.BooleanField(default=True)
+
+    test_mode = models.BooleanField(default=True)
+
+    url_ipn = models.URLField()
+
+    key_request = models.CharField(max_length=255)
+    key_ipn = models.CharField(max_length=255)
+    key_api = models.CharField(max_length=255)
+
+    allowed_users = models.ManyToManyField(User, blank=True)
+
+    def __unicode__(self):
+        bonus = ''
+
+        if self.test_mode:
+            bonus += '<i class="fa fa-flask"></i>'
+
+        if not self.active or not self.admin_enable:
+            bonus += '<i class="glyphicon glyphicon-ban-circle"></i>'
+
+        if bonus:
+            bonus = ' (' + bonus + ')'
+
+        return self.name + bonus
+
+    def build_user_list(self):
+        """Return a list of user in text format"""
+        return ','.join([x.username for x in self.allowed_users.order_by('username').all()])
+
+    def generate_diff(self, object):
+        """Generate diff from this objet an another one (for logs)"""
+        retour = '\n\n'
+
+        for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn')):
+            if not object.pk or getattr(self, prop) != getattr(object, prop):
+                retour += prop_name + '=' + str(getattr(self, prop))
+
+                if object.pk:
+                    retour += ' (was ' + str(getattr(object, prop)) + ')'
+
+                retour += '\n'
+
+        retour += 'User list: ' + self.build_user_list()
+        return retour
+
+    def is_user_allowed(self, user):
+        """Return true is a user is allowed to display / edit the config"""
+
+        if user.is_superuser:
+            return True
+
+        if not self.pk:
+            return user.is_staff  # Only staff can create configs
+
+        return user in self.allowed_users
+
+    def gen_key(self):
+        """Return a random key suitable for keys of the model"""
+
+        h = hashlib.sha512()
+
+        for i in range(0, 2):
+            h.update(str(uuid.uuid4()))
+            h.update(str(datetime.datetime.now()))
+            h.update(str(random.random()))
+            h.update(str(self.pk))
+            h.update(self.name)
+
+        return h.hexdigest()
+
+    def gen_key_api(self):
+        """Generate a new key for api"""
+        self.key_api = self.gen_key()
+
+    def gen_key_ipn(self):
+        """Generate a new key for ipn"""
+        self.key_ipn = self.gen_key()
+
+    def gen_key_request(self):
+        """Generate a new key for requests"""
+        self.key_request = self.gen_key()
+
+    def save(self, *args, **kwargs):
+        """Overide the save request to check if all keys have been generated"""
+
+        if not self.key_api:
+            self.gen_key_api()
+
+        if not self.key_ipn:
+            self.gen_key_ipn()
+
+        if not self.key_request:
+            self.gen_key_request()
+
+        super(Config, self).save(*args, **kwargs)
+
+
+class ConfigLogs(models.Model):
+
+    config = models.ForeignKey(Config)
+    user = models.ForeignKey(User)
+    when = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()

@@ -12,7 +12,7 @@
 
 <ol class="breadcrumb">
   <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>
+  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-users"></i> {% trans "Users" %}</a></li>
   {% if form.instance.pk %}
     <li><a href="{% url 'users.views.show' form.instance.pk %}"><i class="fa fa-user"></i> {{form.instance}}</a></li>
   {% endif %}

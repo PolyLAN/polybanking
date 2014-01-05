@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{{block.super}} :: {% trans "Config management" %} :: {% trans "Logs" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-configs').addClass('active');</script>
+
+<h2>{% trans "Config management" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>
+  <li><a href="{% url 'configs.views.show' object.pk %}"><i class="fa fa-cog"></i> {{object|safe}}</a></li>
+  <li class="active"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</li>
+
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Logs for" %} {{object|safe}}</h3>
+        </div>
+        <div class="panel-body">
+
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-to-sort-but-not-automaticaly">
+                <thead>
+                    <tr>
+                        <th>{% trans "When" %}</th>
+                        <th>{% trans "Who" %}</th>
+                        <th>{% trans "What" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for elem in list %}
+                        <tr>
+                            <td>{{elem.when|date}} {{elem.when|time}} ({{elem.when|timesince}} {% trans "ago" %})</td>
+                            <td>{{elem.user.first_name}} {{elem.user.last_name}} ({{elem.user.username}})</td>
+                            <td>{{elem.text|linebreaksbr}}</td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+
+            
+                <div class="row-fluid box-section" style="text-align: right;">
+                    <a href="{% url 'configs.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
+                    <a href="{% url 'configs.views.show' object.pk %}" class="btn btn-primary"> {% trans "Back to the config" %}</a>
+                </div>
+
+            
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

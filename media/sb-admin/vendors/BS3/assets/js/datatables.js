@@ -389,11 +389,23 @@ if ( $.fn.DataTable.TableTools   ) {
 
 $(document).ready(function() {
 	$('.table-to-sort').dataTable( {
-	  //"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-	  //"sPaginationType": "bootstrap",
 	  "oLanguage": {
 	    "sLengthMenu": "_MENU_ records per page"
 	  }
+	} );
+
+	$('.table-to-sort-reverse').dataTable( {
+		"oLanguage": {
+			"sLengthMenu": "_MENU_ records per page"
+		},
+		"aaSorting": [[ 0, "desc" ]]
+	} );
+
+	$('.table-to-sort-but-not-automaticaly').dataTable( {
+		"oLanguage": {
+			"sLengthMenu": "_MENU_ records per page"
+		},
+		"aaSorting": []
 	} );
 
 	$('.dataTables_length select').addClass('form-control input-sm');

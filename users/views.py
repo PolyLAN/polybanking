@@ -33,6 +33,7 @@ def list(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def edit(request, pk):
+    """Edit or create an user"""
 
     try:
         object = User.objects.get(pk=pk)
@@ -57,6 +58,8 @@ def edit(request, pk):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def delete(request, pk):
+    """Delete an user"""
+
     object = get_object_or_404(User, pk=pk)
 
     # Don't delete ourself
@@ -72,6 +75,7 @@ def delete(request, pk):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def show(request, pk):
+    """Display an user"""
 
     object = get_object_or_404(User, pk=pk)
 

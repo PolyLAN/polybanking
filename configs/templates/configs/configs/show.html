@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{{block.super}} :: {% trans "Configs management" %} :: {% trans "Details" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-configs').addClass('active');</script>
+
+<h2>{% trans "Configs management" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>
+  <li class="active"><i class="fa fa-cog"></i> {{object|safe}}</a></li>
+
+</ol>
+
+<div class="row-fluid">
+
+    {% if not object.active or not object.admin_enable %}
+      <p class="alert alert-danger well-sm">
+        <i class="glyphicon glyphicon-ban-circle"></i> {% trans "This configuration is disabled !" %}
+      </p>
+    {% endif %}
+
+    {% if object.test_mode %}
+      <p class="alert alert-info well-sm">
+        <i class="fa fa-flask"></i> {% trans "This configuration is in test mode !" %}
+      </p>
+    {% endif %}
+
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Details of a config" %}</h3>
+        </div>
+        <div class="panel-body">
+
+          <form>
+              
+              <div class="form-group">
+                <label>{% trans "Name" %}</label>
+                <p class="form-control-static">{{object.name}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "URL Ipn" %}</label>
+                <p class="form-control-static">{{object.url_ipn}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Test mode ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.test_mode|yesno:"success,danger"}}">{{object.test_mode|yesno}}</span></p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Is active ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.active|yesno:"success,danger"}}">{{object.active|yesno}}</span></p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Is admin enabled ?" %}</label>
+                <p class="form-control-static"><span class="label label-{{object.admin_enable|yesno:"success,danger"}}">{{object.admin_enable|yesno}}</span></p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Key for requests" %}</label>
+                <p class="form-control-static">
+                  <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_request}}">{% trans "Copy" %}</span> {{object.key_request|truncatechars:9}}
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_requests_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Key for IPN" %}</label>
+                <p class="form-control-static">
+                  <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_ipn}}">{% trans "Copy" %}</span> {{object.key_ipn|truncatechars:9}}
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_ipn_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Key for API" %}</label>
+                <p class="form-control-static">
+                  <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_api}}">{% trans "Copy" %}</span> {{object.key_api|truncatechars:9}}
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_api_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Users allowed" %}</label>
+                <p class="form-control-static">
+                    {% if object.allowed_users.all %}
+                      <ul>
+                        {% for u in object.allowed_users.all %}
+                          <li>{{u.first_name}} {{u.last_name}} ({{u}})</li>
+                        {% endfor %}
+                      </ul>
+                    {% else %}
+
+                      <p class="alert alert-warning well-sm" style="display: inline-block;">
+                        {% trans "Only admins can use this config" %}
+                      </p>
+
+                    {% endif %}
+
+                </p>
+              </div>
+
+          </form>
+
+          <div class="row-fluid box-section" style="text-align: right;">
+              <a href="{% url 'configs.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
+              <a href="{% url 'configs.views.show_logs' elem.pk %}" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
+              <a href="{% url 'configs.views.edit' object.pk %}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
+          </div>            
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="{{MEDIA_URL}}ZeroClipboard.js"></script>
+
+  <script type="text/javascript">
+
+    $(document).ready(function(){
+
+       $(".btn-key").zclip({
+          path: "{{MEDIA_URL}}ZeroClipboard.swf",
+          copy: function(){
+              return $(this).attr('x-key');
+              },
+          afterCopy: function() {
+            $('.btn-key').removeClass('btn-success');
+            $('.btn-key').html('{% trans "Copy" %}');
+            $(this).addClass('btn-success');
+
+            $(this).html('{% trans "Copied !" %}');
+          }
+          });
+      });
+  </script>
+
+{% endblock %}

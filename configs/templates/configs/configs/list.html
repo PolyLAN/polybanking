@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{block.super}} :: {% trans "Configs" %} :: {% trans "List" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-configs').addClass('active');</script>
+
+<h2>{% trans "Configs" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+  <li class="active"><i class="fa fa-cogs"></i> {% trans "Configs" %}</li>
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "List of configs" %}</h3>
+        </div>
+        <div class="panel-body">
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-to-sort">
+                <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "URL Ipn" %}</th>
+                        <th>{% trans "Test mode ?" %}</th>
+                        <th>{% trans "Active ?" %}</th>
+                        <th>{% trans "Admin enabled ?" %}</th>
+                        <th style="width: 150px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for elem in list %}
+                        <tr>
+                            <td><a href="{% url 'configs.views.show' elem.pk %}">{{elem.name}}</a></td>
+                            <td>{{elem.url_ipn}}</td>
+                            <td><span class="label label-{{elem.test_mode|yesno:"success,danger"}}">{{elem.test_mode|yesno}}</span></td>
+                            <td><span class="label label-{{elem.active|yesno:"success,danger"}}">{{elem.active|yesno}}</span></td>
+                            <td><span class="label label-{{elem.admin_enable|yesno:"success,danger"}}">{{elem.admin_enable|yesno}}</span></td>
+                            <td>
+                                <a href="{% url 'configs.views.show_logs' elem.pk %}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
+                                <a href="{% url 'configs.views.edit' elem.pk %}" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+
+            {% if user.is_superuser or user.is_staff %}
+                <div class="row-fluid box-section" style="text-align: right;">
+                    <a href="{% url 'configs.views.edit' '0' %}" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> {% trans "Add" %}</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    
+
+</div>
+
+{% endblock %}

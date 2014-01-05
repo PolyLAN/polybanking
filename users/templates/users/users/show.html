@@ -12,7 +12,7 @@
 
 <ol class="breadcrumb">
   <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>
+  <li><a href="{% url 'users.views.list' %}"><i class="fa fa-users"></i> {% trans "Users" %}</a></li>
   <li class="active"><i class="fa fa-user"></i> {{object}}</a></li>
 
 </ol>
@@ -68,13 +68,11 @@
 
           </form>
 
-  
-
-            <div class="row-fluid box-section" style="text-align: right;">
-                <a href="{% url 'users.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
-                <a href="{% url 'users.views.delete' object.pk %}" class="btn btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');"><i class="glyphicon-remove glyphicon"></i> {% trans "Delete" %}</a>
-                <a href="{% url 'users.views.edit' object.pk %}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
-            </div>            
+          <div class="row-fluid box-section" style="text-align: right;">
+              <a href="{% url 'users.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
+              <a href="{% url 'users.views.delete' object.pk %}" class="btn btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');"><i class="glyphicon-remove glyphicon"></i> {% trans "Delete" %}</a>
+              <a href="{% url 'users.views.edit' object.pk %}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
+          </div>            
 
         </div>
     </div>

@@ -16,20 +16,17 @@
     <!-- Add custom CSS here -->
     <link href="{{MEDIA_URL}}sb-admin/css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="{{MEDIA_URL}}sb-admin/font-awesome/css/font-awesome.min.css">
-    <!--<link href="{{MEDIA_URL}}sb-admin/vendors/datatables/css/jquery.dataTables.css" rel="stylesheet" media="screen">-->
     <link href="{{MEDIA_URL}}sb-admin/vendors/BS3/assets/css/datatables.css" rel="stylesheet" media="screen">
 
-     <!-- JavaScript -->
+    <!-- JavaScript -->
     <script src="{{MEDIA_URL}}sb-admin/js/jquery-1.10.2.js"></script>
     <script src="{{MEDIA_URL}}sb-admin/js/bootstrap.js"></script>
     <script src="{{MEDIA_URL}}sb-admin/vendors/datatables/js/jquery.dataTables.js"></script>
-    <!--<script src="{{MEDIA_URL}}sb-admin/DT_bootstrap.js"></script>-->
     <script src="{{MEDIA_URL}}sb-admin/vendors/BS3/assets/js/datatables.js"></script>
 
-    <script type="text/javascript">
-      /* Table initialisation */
-      
-      </script>
+    <link href="{{MEDIA_URL}}select2/select2.css" rel="stylesheet" media="screen">
+    <link href="{{MEDIA_URL}}select2/select2-bootstrap.css" rel="stylesheet" media="screen">
+    <script src="{{MEDIA_URL}}select2/select2.js"></script>
 
   </head>
 
@@ -53,7 +50,8 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
             <li id="nav-home"><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-            {% if user.is_superuser %}<li id="nav-users"><a href="{% url 'users.views.list' %}"><i class="fa fa-user"></i> {% trans "Users" %}</a></li>{% endif %}
+            {% if user.is_superuser %}<li id="nav-users"><a href="{% url 'users.views.list' %}"><i class="fa fa-users"></i> {% trans "Users" %}</a></li>{% endif %}
+            {% if user.is_superuser or user.is_staff %}<li id="nav-configs"><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>{% endif %}
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
