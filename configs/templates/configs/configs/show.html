@@ -52,6 +52,16 @@
               </div>
 
               <div class="form-group">
+                <label>{% trans "Return URL, if success" %}</label>
+                <p class="form-control-static">{{object.url_back_ok}}</p>
+              </div>
+
+              <div class="form-group">
+                <label>{% trans "Return URL, if error" %}</label>
+                <p class="form-control-static">{{object.url_back_err}}</p>
+              </div>
+
+              <div class="form-group">
                 <label>{% trans "Test mode ?" %}</label>
                 <p class="form-control-static"><span class="label label-{{object.test_mode|yesno:"success,danger"}}">{{object.test_mode|yesno}}</span></p>
               </div>

@@ -18,6 +18,8 @@ class Config(models.Model):
     test_mode = models.BooleanField(default=True)
 
     url_ipn = models.URLField()
+    url_back_ok = models.URLField()
+    url_back_err = models.URLField()
 
     key_request = models.CharField(max_length=255)
     key_ipn = models.CharField(max_length=255)
@@ -47,7 +49,7 @@ class Config(models.Model):
         """Generate diff from this objet an another one (for logs)"""
         retour = '\n\n'
 
-        for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn')):
+        for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn'), ('url_back_ok', 'Return URL for success'), ('url_back_err', 'Return URL for error')):
             if not object.pk or getattr(self, prop) != getattr(object, prop):
                 retour += prop_name + '=' + str(getattr(self, prop))
 
