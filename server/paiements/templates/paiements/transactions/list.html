@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{block.super}} :: {% trans "Transactions" %} :: {% trans "List" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-transations').addClass('active');</script>
+
+<h2>{% trans "Configs" %}</h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+    <li>
+        <select id="select_transaction" onchange="window.location='?configPk=' + $('#select_transaction').val();">
+            {% if user.is_superuser %}
+                <option value="all" {% if configPk == 'all' %}selected{% endif %}>({% trans "All" %})</option>
+            {% endif %}
+
+            {% for config in available_configs %}
+                <option value="{{config.pk}}" {% if configPk == config.pk %}selected{% endif %}>{{config.name}}</option>
+            {% endfor %}
+        </select>
+    </li>
+    <li class="active"><i class="fa fa-money"></i> {% trans "Transactions" %}</li>
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {% if configPk == 'all' %}
+                    {% trans "List of all transactions" %}
+                {% else %}
+                    {% trans "List of transactions" %} ({{config|safe}})
+                {% endif %}
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-to-sort-but-not-automaticaly">
+                <thead>
+                    <tr>
+                        <th>{% trans "Reference" %}</th>
+                        <th>{% trans "Amount" %}</th>
+                        <th>{% trans "Postfinance status" %}</th>
+                        <th>{% trans "Internal status" %}</th>
+                        <th>{% trans "Date" %}</th>
+                        <th style="width: 150px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for elem in list %}
+                        <tr>
+                            <td><a href="{% url 'configs.views.show' elem.pk %}">{{elem.reference}}</a></td>
+                            <td>{{elem.amount_chf|floatformat:"2"}} CHF</td>
+                            <td><span class="label label-{{elem.postfinance_status_good|yesno:"success,danger"}}">{{elem.get_postfinance_status_display}}</span></td>
+                            <td><span class="label label-{{elem.internal_status_good|yesno:"success,danger"}}">{{elem.get_internal_status_display}}</span></td>
+                            <td>{{elem.creation_date|date}} {{elem.creation_date|time}} ({{elem.creation_date|timesince}})</td>
+                            <td>
+                                <a href="{% url 'configs.views.show_logs' elem.pk %}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+
+            {% if user.is_superuser or user.is_staff %}
+                <div class="row-fluid box-section" style="text-align: right;">
+                    <a href="{% url 'configs.views.edit' '0' %}" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> {% trans "Add" %}</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    
+
+</div>
+
+<script type="text/javascript">
+    $('#select_transaction').css('width', '170px').select2();
+</script>
+
+{% endblock %}

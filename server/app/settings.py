@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'main',
     'users',
     'configs',
+    'paiements',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

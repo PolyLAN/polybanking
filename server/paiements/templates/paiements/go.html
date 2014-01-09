@@ -1,0 +1,26 @@
+{% load i18n %}
+<html>
+    <head>
+        <title>PolyBanking</title>
+        
+    </head>
+
+    <body>
+        <h3>PolyBanking</h3>
+
+        {% trans "You are being redirect to the PostFinance's website. Please wait :)" %}
+
+        <form action="{{urlDest}}" method="POST" id="zeForm">
+            {% for key,value in fields.items %}
+                <input type="hidden" name="{{key}}" value="{{value}}">
+            {% endfor %}
+
+            <input type="submit" value="{% trans "Click here if your browser cannot redirect you..." %}">
+        </form>
+
+        <script type="text/javascript">
+            document.getElementById('zeForm').submit();
+        </script>
+
+    </body>
+</html>

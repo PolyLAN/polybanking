@@ -48,7 +48,7 @@ def edit(request, pk):
 
             messages.success(request, 'The user has been saved.')
 
-            return redirect(reverse('users.views.list'))
+            return redirect('users.views.list')
     else:
         form = UserForm(instance=object)
 

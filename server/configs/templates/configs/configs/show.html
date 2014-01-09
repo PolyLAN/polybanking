@@ -77,6 +77,11 @@
               </div>
 
               <div class="form-group">
+                <label>{% trans "Config ID" %}</label>
+                <p class="form-control-static">{{object.pk}}</p>
+              </div>
+
+              <div class="form-group">
                 <label>{% trans "Key for requests" %}</label>
                 <p class="form-control-static">
                   <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_request}}">{% trans "Copy" %}</span> {{object.key_request|truncatechars:9}}

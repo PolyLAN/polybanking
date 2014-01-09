@@ -51,7 +51,8 @@
           <ul class="nav navbar-nav side-nav">
             <li id="nav-home"><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
             {% if user.is_superuser %}<li id="nav-users"><a href="{% url 'users.views.list' %}"><i class="fa fa-users"></i> {% trans "Users" %}</a></li>{% endif %}
-            {% if user.is_superuser or user.is_staff %}<li id="nav-configs"><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>{% endif %}
+            <li id="nav-configs"><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>
+            <li id="nav-transactions"><a href="{% url 'paiements.views.transactions_list' %}"><i class="fa fa-money"></i> {% trans "Transactions" %}</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">

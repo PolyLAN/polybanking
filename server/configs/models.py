@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.html import escape
 
 import uuid
 import datetime
@@ -39,7 +40,7 @@ class Config(models.Model):
         if bonus:
             bonus = ' (' + bonus + ')'
 
-        return self.name + bonus
+        return escape(self.name) + bonus
 
     def build_user_list(self):
         """Return a list of user in text format"""

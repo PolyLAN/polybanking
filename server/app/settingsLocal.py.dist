@@ -14,3 +14,19 @@ DATABASES = {
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
+
+SHA_IN_TEST = ''
+SHA_OUT_TEST = ''
+
+SHA_IN_PROD = ''
+SHA_OUT_PROD = ''
+
+EXTERNAL_BASE_URL = ''
+
+POSTFINANCE_TEST_URL = 'https://e-payment.postfinance.ch/ncol/test/orderstandard.asp'
+POSTFINANCE_PROD_URL = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp'
+
+PSPID_TEST = ''
+PSPID_PROD = ''
+
+CURRENCY = 'CHF'

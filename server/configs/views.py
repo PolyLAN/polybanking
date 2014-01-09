@@ -71,7 +71,7 @@ def edit(request, pk):
 
             messages.success(request, 'The config has been saved.')
 
-            return redirect(reverse('configs.views.list'))
+            return redirect('configs.views.list')
     else:
         form = ConfigForm(request.user, instance=object)
 
@@ -122,7 +122,7 @@ def new_ipn_key(request, pk):
 
     messages.success(request, 'A new IPN key has been generated !')
 
-    return redirect(reverse('configs.views.show', args=(pk,)))
+    return redirect('configs.views.show', pk=pk)
 
 
 @login_required
@@ -141,7 +141,7 @@ def new_requests_key(request, pk):
 
     messages.success(request, 'A new requests key has been generated !')
 
-    return redirect(reverse('configs.views.show', args=(pk,)))
+    return redirect('configs.views.show', pk=pk)
 
 
 @login_required
@@ -160,7 +160,7 @@ def new_api_key(request, pk):
 
     messages.success(request, 'A new api key has been generated !')
 
-    return redirect(reverse('configs.views.show', args=(pk,)))
+    return redirect('configs.views.show', pk=pk)
 
 
 @login_required
