@@ -13,7 +13,7 @@
 <ol class="breadcrumb">
   <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
   <li><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>
-  <li class="active"><i class="fa fa-cog"></i> {{object|safe}}</a></li>
+  <li class="active"><i class="fa fa-cog"></i> {{object|safe}}</li>
 
 </ol>
 
@@ -129,7 +129,7 @@
 
           <div class="row-fluid box-section" style="text-align: right;">
               <a href="{% url 'configs.views.list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
-              <a href="{% url 'configs.views.show_logs' elem.pk %}" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
+              <a href="{% url 'configs.views.show_logs' object.pk %}" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
               <a href="{% url 'configs.views.edit' object.pk %}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> {% trans "Edit" %}</a>
           </div>            
 

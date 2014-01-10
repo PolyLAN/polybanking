@@ -11,5 +11,7 @@ urlpatterns = patterns(
     url(r'^return$', 'return_from_postfinance'),
 
     url(r'^transactions/list$', 'transactions_list'),
+    url(r'^transactions/(?P<pk>[0-9]+)/$', 'transactions_show'),
+    url(r'^transactions/(?P<pk>[0-9]+)/logs$', 'transactions_show_logs'),
 
 )

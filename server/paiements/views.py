@@ -15,6 +15,7 @@ from django.core.paginator import InvalidPage, EmptyPage, Paginator
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 import json
 import uuid
@@ -228,7 +229,11 @@ def transactions_list(request):
             configPk = available_configs[0]
 
     if configPk != 'all' or not request.user.is_superuser:
-        config = get_object_or_404(Config, pk=configPk)
+        try:
+            config = get_object_or_404(Config, pk=configPk)
+        except:
+            config = None
+
         transactions = Transaction.objects.filter(config=config)
     else:
         transactions = Transaction.objects
@@ -237,3 +242,29 @@ def transactions_list(request):
     transactions = transactions.order_by('-creation_date').all()
 
     return render_to_response('paiements/transactions/list.html', {'list': transactions, 'available_configs': available_configs, 'configPk': configPk, 'config': config}, context_instance=RequestContext(request))
+
+
+@login_required
+def transactions_show_logs(request, pk):
+    """Show logs of transactions"""
+
+    object = get_object_or_404(Transaction, pk=pk)
+
+    if not request.user.is_superuser and not request.user in object.allowed_users:
+        raise Http404
+
+    list = object.transactionlog_set.order_by('-when').all()
+
+    return render_to_response('paiements/transactions/logs.html', {'object': object, 'list': list}, context_instance=RequestContext(request))
+
+
+@login_required
+def transactions_show(request, pk):
+    """Display details of a transaction"""
+
+    object = get_object_or_404(Transaction, pk=pk)
+
+    if not request.user.is_superuser and not request.user in object.allowed_users:
+        raise Http404
+
+    return render_to_response('paiements/transactions/show.html', {'object': object}, context_instance=RequestContext(request))

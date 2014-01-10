@@ -90,6 +90,9 @@ class Transaction(models.Model):
         """Return true if the internal status of the transaction if good (user back from postfinance)"""
         return self.internal_status == 'fb'
 
+    def __unicode__(self):
+        return self.reference
+
 
 class TransactionLog(models.Model):
     """A transaction log"""

@@ -15,6 +15,7 @@ from django.core.paginator import InvalidPage, EmptyPage, Paginator
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 from configs.models import Config, ConfigLogs
 from configs.forms import ConfigForm
@@ -55,7 +56,7 @@ def edit(request, pk):
             object = form.save(commit=False)
 
             if not create:
-                ConfigLogs(config=object, user=request.user, text='Config has been updated: ' + object.generate_diff(Config.objects.get(pk=pk))).save()
+                ConfigLogs(config=object, user=request.user, text=_('Config has been updated: ') + object.generate_diff(Config.objects.get(pk=pk))).save()
 
             object.save()  # To use allowed_users
 
@@ -67,9 +68,9 @@ def edit(request, pk):
             object.save()
 
             if create:
-                ConfigLogs(config=object, user=request.user, text='Config has been created: ' + object.generate_diff(Config())).save()
+                ConfigLogs(config=object, user=request.user, text=_('Config has been created: ') + object.generate_diff(Config())).save()
 
-            messages.success(request, 'The config has been saved.')
+            messages.success(request, _('The config has been saved.'))
 
             return redirect('configs.views.list')
     else:
@@ -89,7 +90,7 @@ def edit(request, pk):
 #         raise Http404
 
 #     object.delete()
-#     messages.success(request, 'Config has been deleted.')
+#     messages.success(request, _('Config has been deleted.'))
 
 #     return redirect('configs.views.list')
 
@@ -118,9 +119,9 @@ def new_ipn_key(request, pk):
     object.gen_key_ipn()
     object.save()
 
-    ConfigLogs(config=object, user=request.user, text='A new IPN key has been generated.').save()
+    ConfigLogs(config=object, user=request.user, text=_('A new IPN key has been generated.')).save()
 
-    messages.success(request, 'A new IPN key has been generated !')
+    messages.success(request, _('A new IPN key has been generated !'))
 
     return redirect('configs.views.show', pk=pk)
 
@@ -137,9 +138,9 @@ def new_requests_key(request, pk):
     object.gen_key_request()
     object.save()
 
-    ConfigLogs(config=object, user=request.user, text='A new requests key has been generated.').save()
+    ConfigLogs(config=object, user=request.user, text=_('A new requests key has been generated.')).save()
 
-    messages.success(request, 'A new requests key has been generated !')
+    messages.success(request, _('A new requests key has been generated !'))
 
     return redirect('configs.views.show', pk=pk)
 
@@ -156,9 +157,9 @@ def new_api_key(request, pk):
     object.gen_key_api()
     object.save()
 
-    ConfigLogs(config=object, user=request.user, text='A new api key has been generated.').save()
+    ConfigLogs(config=object, user=request.user, text=_('A new api key has been generated.')).save()
 
-    messages.success(request, 'A new api key has been generated !')
+    messages.success(request, _('A new api key has been generated !'))
 
     return redirect('configs.views.show', pk=pk)
 

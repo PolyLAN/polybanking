@@ -15,6 +15,7 @@ from django.core.paginator import InvalidPage, EmptyPage, Paginator
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 
 @login_required

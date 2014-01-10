@@ -51,13 +51,13 @@
                 <tbody>
                     {% for elem in list %}
                         <tr>
-                            <td><a href="{% url 'configs.views.show' elem.pk %}">{{elem.reference}}</a></td>
+                            <td><a href="{% url 'paiements.views.transactions_show' elem.pk %}">{{elem.reference}}</a></td>
                             <td>{{elem.amount_chf|floatformat:"2"}} CHF</td>
                             <td><span class="label label-{{elem.postfinance_status_good|yesno:"success,danger"}}">{{elem.get_postfinance_status_display}}</span></td>
                             <td><span class="label label-{{elem.internal_status_good|yesno:"success,danger"}}">{{elem.get_internal_status_display}}</span></td>
                             <td>{{elem.creation_date|date}} {{elem.creation_date|time}} ({{elem.creation_date|timesince}})</td>
                             <td>
-                                <a href="{% url 'configs.views.show_logs' elem.pk %}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
+                                <a href="{% url 'paiements.views.transactions_show_logs' elem.pk %}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
                             </td>
                         </tr>
                     {% endfor %}

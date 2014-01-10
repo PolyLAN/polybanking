@@ -15,6 +15,7 @@ from django.core.paginator import InvalidPage, EmptyPage, Paginator
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 from users.forms import UserForm
@@ -46,7 +47,7 @@ def edit(request, pk):
         if form.is_valid():  # If the form is valid
             object = form.save()
 
-            messages.success(request, 'The user has been saved.')
+            messages.success(request, _('The user has been saved.'))
 
             return redirect('users.views.list')
     else:
@@ -65,9 +66,9 @@ def delete(request, pk):
     # Don't delete ourself
     if object.pk != request.user.pk:
         object.delete()
-        messages.success(request, 'User has been deleted.')
+        messages.success(request, _('User has been deleted.'))
     else:
-        messages.warning(request, 'You cannot delete yourself !')
+        messages.warning(request, _('You cannot delete yourself !'))
 
     return redirect('users.views.list')
 

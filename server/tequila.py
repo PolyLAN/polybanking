@@ -40,8 +40,8 @@ class Backend:
             return None
 
         # Get informations about user
-        firstName = re.search('\nfirstname=(.*)', data).group(1)
-        name = re.search('\nname=(.*)', data).group(1)
+        firstName = re.search('\nfirstname=(.*)', data).group(1).split(',')[-1]
+        name = re.search('\nname=(.*)', data).group(1).split(',')[-1]
         email = re.search('\nemail=(.*)', data).group(1)
         sciper = re.search('\nuniqueid=(.*)', data).group(1)
 
