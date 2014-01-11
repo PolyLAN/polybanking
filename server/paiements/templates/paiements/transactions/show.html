@@ -62,7 +62,10 @@
 
               <div class="form-group">
                 <label>{% trans "Ipn needed ?" %}</label>
-                <p class="form-control-static"><span class="label label-{{object.ipn_needed|yesno:"danger,success"}}">{{object.ipn_needed|yesno}}</span></p>
+                <p class="form-control-static">
+                  <span class="label label-{{object.ipn_needed|yesno:"danger,success"}}">{{object.ipn_needed|yesno}}</span>
+                  <a href="{% url 'paiements.views.transactions_send_ipn' object.pk %}" class="btn btn-warning btn-xs">{% trans "Force send" %}</a>
+                </p>
               </div>
 
               <div class="form-group">

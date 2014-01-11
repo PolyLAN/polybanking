@@ -26,10 +26,19 @@ def start():
 
     return render_template('start.html', result=result, url=url)
 
+
 @app.route('/back')
 def back():
 
     return render_template('back.html', result='ok' in request.args)
+
+
+@app.route('/ipn', methods=['POST'])
+def ipn():
+
+    print api.check_ipn(request.form)
+
+    return ''
 
 if __name__ == "__main__":
     app.run(debug=True)

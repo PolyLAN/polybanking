@@ -30,3 +30,5 @@ PSPID_TEST = ''
 PSPID_PROD = ''
 
 CURRENCY = 'CHF'
+
+BROKER_URL = ''

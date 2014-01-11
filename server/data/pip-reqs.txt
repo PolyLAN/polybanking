@@ -1,2 +1,5 @@
 south
 django-bootstrap3
+requests
+celery
+django-celery

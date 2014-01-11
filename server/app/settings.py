@@ -114,6 +114,7 @@ INSTALLED_APPS = (
 
     'south',
     'bootstrap3',
+    'djcelery',
 
     'main',
     'users',
@@ -160,6 +161,14 @@ TEQUILA_SERVER2 = 'https://tequila.epfl.ch'  # Url of tequila server, for redire
 TEQUILA_SERVICE = 'PolyBanking'  # Title used in tequila
 TEQUILA_AUTOCREATE = True  # Auto create users ?
 TEQUILA_FAILURE = '/'  # Where to redirect user if there is a problem
+
+import djcelery
+djcelery.setup_loader()
+
+DATE_FORMAT = 'Y/d/m'
+TIME_FORMAT = 'H:i:s'
+
+DATETIME_FORMAT = DATE_FORMAT + ' ' + TIME_FORMAT
 
 try:
     from settingsLocal import *

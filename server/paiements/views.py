@@ -23,6 +23,7 @@ from libs.postfinance import buildPostFinance
 
 from configs.models import Config
 from paiements.models import Transaction, TransactionLog
+from paiements.tasks import send_ipn
 from libs import utils
 
 from django.utils.timezone import now
@@ -107,7 +108,7 @@ def go(request, pk):
 
     t.internal_status = 'fw'
     t.last_userforwarded_date = now()
-    t.save()
+    t.save(update_fields=['internal_status', 'last_userforwarded_date'])
 
     return render_to_response('paiements/go.html', {'fields': fields, 'urlDest': urlDest}, context_instance=RequestContext(request))
 
@@ -115,8 +116,6 @@ def go(request, pk):
 @csrf_exempt
 def ipn(request):
     """Call by Postfinance website about status"""
-
-    print request.POST
 
     # Get transaction pk
     orderId = request.POST.get('orderID')
@@ -154,9 +153,12 @@ def ipn(request):
     t.internal_status = 'fb'
     t.last_postfinance_ipn_date = now()
     t.postfinance_status = request.POST.get('STATUS')
-    t.save()
+    t.ipn_needed = True
+    t.save(update_fields=['internal_status', 'last_postfinance_ipn_date', 'postfinance_status', 'ipn_needed', 'postfinance_id'])
 
     TransactionLog(transaction=t, log_type='postfinanceStatus', extra_data=request.POST.get('STATUS')).save()
+
+    send_ipn.delay(t.pk)
 
     return HttpResponse('')
 
@@ -198,7 +200,7 @@ def return_from_postfinance(request):
 
     t.internal_status = 'fb'
     t.last_user_back_from_postfinance_date = now()
-    t.save()
+    t.save(update_fields=['internal_status', 'last_user_back_from_postfinance_date', 'postfinance_id'])
 
     TransactionLog(transaction=t, log_type='userBackFromPostfinance', extra_data=request.META['REMOTE_ADDR']).save()
 
@@ -268,3 +270,18 @@ def transactions_show(request, pk):
         raise Http404
 
     return render_to_response('paiements/transactions/show.html', {'object': object}, context_instance=RequestContext(request))
+
+
+@login_required
+def transactions_send_ipn(request, pk):
+
+    object = get_object_or_404(Transaction, pk=pk)
+
+    if not request.user.is_superuser and not request.user in object.allowed_users:
+        raise Http404
+
+    send_ipn.delay(object.pk)
+
+    messages.success(request, _('IPN has been queued !'))
+
+    return redirect('paiements.views.transactions_show', object.pk)

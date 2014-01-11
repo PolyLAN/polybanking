@@ -1,5 +1,6 @@
 import requests
 import hashlib
+import datetime
 
 
 class PolyBanking():
@@ -45,3 +46,21 @@ class PolyBanking():
             return (result['status'], result['url'])
         except:
             return ('ERROR', '')
+
+    def check_ipn(self, post_data):
+        """Check if IPN data is valid. Return (is_ok, message, reference, status, status_good, last_update)"""
+
+        data = {}
+
+        #check sign
+        for key in post_data:
+            if key != 'sign':
+                data[key] = post_data[key]
+
+        if post_data['sign'] != self.compute_sign(self.keyIPN, data):
+            return (False, 'SIGN', None, None, None, None)
+
+        if post_data['config'] != self.config_id:
+            return (False, 'CONFIG', None, None, None, None)
+
+        return (True, '', data['reference'], data['postfinance_status'], data['postfinance_status_good'] == 'True', datetime.datetime.strptime(data['last_update'][:-6], '%Y-%m-%d %H:%M:%S'))
