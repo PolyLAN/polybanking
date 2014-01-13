@@ -48,18 +48,18 @@ class Config(models.Model):
 
     def generate_diff(self, other):
         """Generate diff from this objet an another one (for logs)"""
-        retour = '\n\n'
+        retour = u'\n\n'
 
         for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn'), ('url_back_ok', 'Return URL for success'), ('url_back_err', 'Return URL for error')):
             if not other.pk or getattr(self, prop) != getattr(other, prop):
-                retour += prop_name + '=' + str(getattr(self, prop))
+                retour += unicode(prop_name) + u'=' + unicode(getattr(self, prop))
 
                 if other.pk:
-                    retour += ' (was ' + str(getattr(other, prop)) + ')'
+                    retour += u' (was ' + unicode(getattr(other, prop)) + u')'
 
-                retour += '\n'
+                retour += u'\n'
 
-        retour += 'User list: ' + self.build_user_list()
+        retour += u'User list: ' + self.build_user_list()
         return retour
 
     def is_user_allowed(self, user):
@@ -67,11 +67,10 @@ class Config(models.Model):
 
         if user.is_superuser:
             return True
-
-        if not self.pk:
+        elif not self.pk:
             return user.is_staff  # Only staff can create configs
-
-        return user in self.allowed_users
+        else:
+            return user in self.allowed_users
 
     def gen_key(self):
         """Return a random key suitable for keys of the model"""
