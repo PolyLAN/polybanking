@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.html import escape
+from django.utils.translation import ugettext_lazy as _
 
 import uuid
 import datetime
@@ -55,11 +56,11 @@ class Config(models.Model):
                 retour += unicode(prop_name) + u'=' + unicode(getattr(self, prop))
 
                 if other.pk:
-                    retour += u' (was ' + unicode(getattr(other, prop)) + u')'
+                    retour += _(u' (was ') + unicode(getattr(other, prop)) + u')'
 
                 retour += u'\n'
 
-        retour += u'User list: ' + self.build_user_list()
+        retour += _(u'User list: ') + self.build_user_list()
         return retour
 
     def is_user_allowed(self, user):
