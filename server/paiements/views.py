@@ -58,7 +58,7 @@ def start(request):
     # Check if amount > 0
     try:
         amount = int(request.POST.get('amount'))
-    except:
+    except ValueError:
         return build_error('AMOUNT_ERROR')
 
     if amount <= 0:
