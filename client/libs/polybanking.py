@@ -64,3 +64,60 @@ class PolyBanking():
             return (False, 'CONFIG', None, None, None, None)
 
         return (True, '', data['reference'], data['postfinance_status'], data['postfinance_status_good'] == 'True', datetime.datetime.strptime(data['last_update'][:-6], '%Y-%m-%d %H:%M:%S'))
+
+    def get_transactions(self, max_transaction=100):
+        """Return the list of transactions, maximum  max_transaction"""
+
+        data = {}
+
+        data['config_id'] = self.config_id
+        data['secret'] = self.keyAPI
+        data['max_transaction'] = max_transaction
+
+        try:
+            result = requests.post(self.server + '/api/transactions/', data=data).json()
+            if result['result'] != 'ok':
+                return None
+
+            return result['data']
+
+        except:
+            return None
+
+    def get_transaction(self, reference):
+        """Return details about a transaction"""
+
+        data = {}
+
+        data['config_id'] = self.config_id
+        data['secret'] = self.keyAPI
+        data['reference'] = reference
+
+        try:
+            result = requests.post(self.server + '/api/transactions/' + reference + '/', data=data).json()
+            if result['result'] != 'ok':
+                return None
+
+            return result['data']
+
+        except:
+            return None
+
+    def get_transaction_logs(self, reference):
+        """Return logs about a transaction"""
+
+        data = {}
+
+        data['config_id'] = self.config_id
+        data['secret'] = self.keyAPI
+        data['reference'] = reference
+
+        try:
+            result = requests.post(self.server + '/api/transactions/' + reference + '/logs/', data=data).json()
+            if result['result'] != 'ok':
+                return None
+
+            return result['data']
+
+        except:
+            return None

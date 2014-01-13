@@ -93,6 +93,19 @@ class Transaction(models.Model):
     def __unicode__(self):
         return self.reference
 
+    def dump_api(self):
+        """Return values for API"""
+
+        retour = {}
+
+        for val in ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date']:
+            retour[val] = str(getattr(self, val))
+
+        for cal, name in [('get_postfinance_status_display', 'postfinance_status_text'), ('get_internal_status_display', 'internal_status_text')]:
+            retour[name] = getattr(self, cal)()
+
+        return retour
+
 
 class TransactionLog(models.Model):
     """A transaction log"""
@@ -113,3 +126,16 @@ class TransactionLog(models.Model):
         )
 
     log_type = models.CharField(max_length=64, choices=LOG_TYPE)
+
+    def dump_api(self):
+        """Return values for API"""
+
+        retour = {}
+
+        for val in ['when', 'extra_data', 'log_type']:
+            retour[val] = str(getattr(self, val))
+
+        for cal, name in [('get_log_type_display', 'log_type_text')]:
+            retour[name] = getattr(self, cal)()
+
+        return retour

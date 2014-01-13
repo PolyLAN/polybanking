@@ -21,6 +21,7 @@ urlpatterns = patterns(
     (r'^users/logout$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
 
     url(r'', include('main.urls')),
+    url(r'^api/', include('api.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^configs/', include('configs.urls')),
     url(r'^paiements/', include('paiements.urls')),

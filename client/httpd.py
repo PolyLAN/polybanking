@@ -30,7 +30,12 @@ def start():
 @app.route('/back')
 def back():
 
-    return render_template('back.html', result='ok' in request.args)
+    transaction_list = api.get_transactions(max_transaction=3)
+
+    transaction_details = api.get_transaction(transaction_list[0]['reference'])
+    transaction_logs = api.get_transaction_logs(transaction_list[0]['reference'])
+
+    return render_template('back.html', result='ok' in request.args, last_transactions=transaction_list, last_transaction_detail=transaction_details, last_transaction_logs=transaction_logs)
 
 
 @app.route('/ipn', methods=['POST'])

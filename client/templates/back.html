@@ -1,3 +1,38 @@
 <h3>PolyBanking Test/Demo client</h3>
 
-We're back. {% if result %}Status seem ok{% else %}Status seem err{%endif %}
+We're back. {% if result %}Status seem ok{% else %}Status seem err{%endif %}<br /><br />
+
+Last transactions: 
+
+<ul>
+    {% for t in last_transactions %}
+        <li>{{t}}</li>
+    {% endfor %}
+</ul>
+
+
+{% if last_transaction_detail %}
+    Last transaction details:
+
+    <ul>
+        {% for key,val in last_transaction_detail.items() %}
+            <li><b>{{key}}</b>: {{val}}</li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
+
+
+{% if last_transaction_logs %}
+    Last transaction logs:
+
+    <ul>
+        {% for log in last_transaction_logs %}
+            <li>
+                {% for key,val in log.items() %}
+                    <b>{{key}}</b>: {{val}},
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
