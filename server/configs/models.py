@@ -46,16 +46,16 @@ class Config(models.Model):
         """Return a list of user in text format"""
         return u','.join([user.username for user in self.allowed_users.order_by('username')])
 
-    def generate_diff(self, object):
+    def generate_diff(self, other):
         """Generate diff from this objet an another one (for logs)"""
         retour = '\n\n'
 
         for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn'), ('url_back_ok', 'Return URL for success'), ('url_back_err', 'Return URL for error')):
-            if not object.pk or getattr(self, prop) != getattr(object, prop):
+            if not other.pk or getattr(self, prop) != getattr(other, prop):
                 retour += prop_name + '=' + str(getattr(self, prop))
 
-                if object.pk:
-                    retour += ' (was ' + str(getattr(object, prop)) + ')'
+                if other.pk:
+                    retour += ' (was ' + str(getattr(other, prop)) + ')'
 
                 retour += '\n'
 
