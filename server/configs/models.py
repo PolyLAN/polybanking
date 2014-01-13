@@ -44,7 +44,7 @@ class Config(models.Model):
 
     def build_user_list(self):
         """Return a list of user in text format"""
-        return u','.join([x.username for x in self.allowed_users.order_by('username').all()])
+        return u','.join([user.username for user in self.allowed_users.order_by('username')])
 
     def generate_diff(self, object):
         """Generate diff from this objet an another one (for logs)"""
