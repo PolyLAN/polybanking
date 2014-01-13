@@ -39,42 +39,42 @@ def edit(request, pk):
     """Edit or create a config"""
 
     try:
-        object = Config.objects.get(pk=pk)
+        config = Config.configs.get(pk=pk)
         create = False
     except:
-        object = Config()
+        config = Config()
         create = True
 
-    if not object.is_user_allowed(request.user):
+    if not config.is_user_allowed(request.user):
         raise Http404
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = ConfigForm(request.user, request.POST, instance=object)
+        form = ConfigForm(request.user, request.POST, instance=config)
 
         if form.is_valid():  # If the form is valid
 
-            object = form.save(commit=False)
+            config = form.save(commit=False)
 
             if not create:
-                ConfigLogs(config=object, user=request.user, text=_('Config has been updated: ') + object.generate_diff(Config.objects.get(pk=pk))).save()
+                ConfigLogs(config=config, user=request.user, text=_('Config has been updated: ') + config.generate_diff(Config.configs.get(pk=pk))).save()
 
-            object.save()  # To use allowed_users
+            config.save()  # To use allowed_users
 
-            object.allowed_users.clear()
+            config.allowed_users.clear()
 
             for u in request.POST.get('allowed_users', []):
-                object.allowed_users.add(User.objects.get(pk=u))
-            object.allowed_users.add(request.user)
-            object.save()
+                config.allowed_users.add(User.configs.get(pk=u))
+            config.allowed_users.add(request.user)
+            config.save()
 
             if create:
-                ConfigLogs(config=object, user=request.user, text=_('Config has been created: ') + object.generate_diff(Config())).save()
+                ConfigLogs(config=config, user=request.user, text=_('Config has been created: ') + config.generate_diff(Config())).save()
 
             messages.success(request, _('The config has been saved.'))
 
             return redirect('configs.views.list')
     else:
-        form = ConfigForm(request.user, instance=object)
+        form = ConfigForm(request.user, instance=config)
 
     return render_to_response('configs/configs/edit.html', {'form': form}, context_instance=RequestContext(request))
 
