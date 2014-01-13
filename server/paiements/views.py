@@ -33,15 +33,15 @@ from django.utils.timezone import now
 def start(request):
     """Start a new request"""
 
-    def build_error(status):
+    def build_error(status, error_code=400):
         """Build an error response"""
-        return HttpResponse(json.dumps({'status': status, 'url': ''}))
-
+        return HttpResponse(json.dumps({'status': status, 'url': ''}), status=error_code)
+ 
     # Get config
     try:
         config = Config.objects.get(pk=request.POST.get('config_id'), active=True, admin_enable=True)
-    except Config.DoesNotExist:
-        return build_error('CONFIG_ERROR')
+    except:
+        return build_error('CONFIG_ERROR', )
 
     # Check signature
     data = {}
