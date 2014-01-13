@@ -29,13 +29,15 @@ from libs import utils
 from django.utils.timezone import now
 
 
+def build_error(status, error_code=400):
+    """Build an error response"""
+    return HttpResponse(json.dumps({'status': status, 'url': ''}), status=error_code)
+
+
 @csrf_exempt
 def start(request):
     """Start a new request"""
 
-    def build_error(status, error_code=400):
-        """Build an error response"""
-        return HttpResponse(json.dumps({'status': status, 'url': ''}), status=error_code)
     if request.method != 'POST':
         build_error('BAD_REQUEST_TYPE', error_code=405)
 
@@ -121,9 +123,13 @@ def ipn(request):
     """Call by Postfinance website about status"""
 
     # Get transaction pk
-    orderId = request.POST.get('orderID')
+    orderId = request.POST.get('orderID', '')
 
-    (who, pk) = orderId.split('-', 2)
+    if '-' in orderId:
+        (who, pk) = orderId.split('-', 2)
+    else:
+        #should also raise an error
+        build_error('UNVALID_ ID')
 
     if who != 'polybanking':
         raise Http404
