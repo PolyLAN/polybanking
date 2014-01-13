@@ -29,22 +29,22 @@ class Config(models.Model):
     allowed_users = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
-        bonus = ''
+        bonus = u''
 
         if self.test_mode:
-            bonus += '<i class="fa fa-flask"></i>'
+            bonus += u'<i class="fa fa-flask"></i>'
 
         if not self.active or not self.admin_enable:
-            bonus += '<i class="glyphicon glyphicon-ban-circle"></i>'
+            bonus += u'<i class="glyphicon glyphicon-ban-circle"></i>'
 
         if bonus:
-            bonus = ' (' + bonus + ')'
+            bonus = u' (' + bonus + u')'
 
         return escape(self.name) + bonus
 
     def build_user_list(self):
         """Return a list of user in text format"""
-        return ','.join([x.username for x in self.allowed_users.order_by('username').all()])
+        return u','.join([x.username for x in self.allowed_users.order_by('username').all()])
 
     def generate_diff(self, object):
         """Generate diff from this objet an another one (for logs)"""
