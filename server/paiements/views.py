@@ -129,16 +129,16 @@ def ipn(request):
         (who, pk) = orderId.split('-', 2)
     else:
         #should also raise an error
-        build_error('UNVALID_ ID')
+        return build_error('UNVALID_ ID')
 
     if who != 'polybanking':
-        raise Http404
+        return build_error('UNVALID_BANK', error_code=404)
 
     # Get transaction
     t = get_object_or_404(Transaction, pk=pk, config__active=True, config__admin_enable=True)
 
     if t.internal_status == 'cr':
-        raise Http404
+        return build_error('UNVALID_STATUS', error_code=404)
 
     postFinance = buildPostFinance(t.config.test_mode)
 
@@ -151,8 +151,8 @@ def ipn(request):
             if val:
                 args[a.upper()] = val
 
-    if request.POST.get('SHASIGN').upper() != postFinance.computeOutSign(args).upper():
-        raise Http404
+    if request.POST.get('SHASIGN', '').upper() != postFinance.computeOutSign(args).upper():
+        return build_error('UNVALID_SHA', error_code=404)
 
     # Let's catch the ID
     if not t.postfinance_id:
