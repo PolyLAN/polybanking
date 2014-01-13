@@ -36,7 +36,10 @@ def start(request):
     def build_error(status, error_code=400):
         """Build an error response"""
         return HttpResponse(json.dumps({'status': status, 'url': ''}), status=error_code)
- 
+    if request.method != 'POST':
+        build_error('BAD_REQUEST_TYPE', error_code=405)
+
+    return build_error('CONFIG_ERROR', )
     # Get config
     try:
         config = Config.objects.get(pk=request.POST.get('config_id'), active=True, admin_enable=True)
