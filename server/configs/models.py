@@ -4,8 +4,8 @@ from django.utils.html import escape
 
 import uuid
 import datetime
-import random
 import hashlib
+import os
 
 
 class Config(models.Model):
@@ -77,10 +77,11 @@ class Config(models.Model):
 
         h = hashlib.sha512()
 
-        for i in range(0, 2):
+
+        for i in range(2):
+            h.update(str(os.random()))
             h.update(str(uuid.uuid4()))
             h.update(str(datetime.datetime.now()))
-            h.update(str(random.random()))
             h.update(str(self.pk))
             h.update(self.name)
 
