@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
@@ -10,6 +9,7 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
+from django.views.decorators import require_GET
 from django.db import connections
 from django.core.paginator import InvalidPage, EmptyPage, Paginator
 from django.core.cache import cache
@@ -22,14 +22,17 @@ import json
 
 
 from configs.models import Config
-from paiements.models import Transaction, TransactionLog
+from paiements.models import Transaction
 
 
 @csrf_exempt
+@require_GET
 def transactions_list(request):
     """Return the list of transaction"""
+    config_pk = request.GET.get('config_id', -1)
+    secret = request.GET.get('secret', '#')
 
-    config = get_object_or_404(Config, pk=request.POST.get('config_id', -1), key_api=request.POST.get('secret', '#'))
+    config = get_object_or_404(Config, pk=config_pk, key_api=secret)
 
     max_transaction = int(request.POST.get('max_transaction', '100'))
 
@@ -42,10 +45,13 @@ def transactions_list(request):
 
 
 @csrf_exempt
+@require_GET
 def transactions_show(request, reference):
     """Return details of a transaction"""
+    config_pk = request.GET.get('config_id', -1)
+    secret = request.GET.get('secret', '#')
 
-    config = get_object_or_404(Config, pk=request.POST.get('config_id', -1), key_api=request.POST.get('secret', '#'))
+    config = get_object_or_404(Config, pk=config_pk, key_api=secret)
 
     transaction = get_object_or_404(Transaction, config=config, reference=reference)
 
@@ -53,16 +59,19 @@ def transactions_show(request, reference):
 
 
 @csrf_exempt
+@require_GET
 def transactions_show_logs(request, reference):
     """Return logs of a transaction"""
+    config_pk = request.GET.get('config_id', -1)
+    secret = request.GET.get('secret', '#')
 
-    config = get_object_or_404(Config, pk=request.POST.get('config_id', -1), key_api=request.POST.get('secret', '#'))
+    config = get_object_or_404(Config, pk=config_pk, key_api=secret)
 
     transaction = get_object_or_404(Transaction, config=config, reference=reference)
 
     retour = []
 
-    for log in transaction.transactionlog_set.order_by('-when').all():
+    for log in transaction.transactionlog_set.order_by('-when'):
         retour.append(log.dump_api())
 
     return HttpResponse(json.dumps({'result': 'ok', 'data': retour}))
