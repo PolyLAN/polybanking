@@ -118,6 +118,7 @@ INSTALLED_APPS = (
 
     'main',
     'users',
+    'export',
     'configs',
     'paiements',
 )

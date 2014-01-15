@@ -7,15 +7,6 @@ from django.conf import settings
 
 urlpatterns = patterns(
     '',
-    # Examples:
-    # url(r'^$', 'polybanking.views.home', name='home'),
-    # url(r'^polybanking/', include('polybanking.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
 
     (r'^users/login$', 'tequila.login'),
     (r'^users/logout$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
@@ -23,6 +14,7 @@ urlpatterns = patterns(
     url(r'', include('main.urls')),
     url(r'^api/', include('api.urls')),
     url(r'^users/', include('users.urls')),
+    url(r'^export/', include('export.urls')),
     url(r'^configs/', include('configs.urls')),
     url(r'^paiements/', include('paiements.urls')),
 

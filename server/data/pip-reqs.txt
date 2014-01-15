@@ -3,3 +3,5 @@ django-bootstrap3
 requests
 celery
 django-celery
+python-dateutil
+PicklingTools

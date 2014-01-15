@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{{block.super}} :: {% trans "Export data" %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">$('#nav-export').addClass('active');</script>
+
+<h2>{% trans "Export of data" %}</h2>
+
+<ol class="breadcrumb">
+  <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+
+  <li class="active"><i class="fa fa-truck"></i> {% trans "Export form" %}</li>
+
+</ol>
+
+<div class="row-fluid">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Export parameters" %}</h3>
+        </div>
+        <div class="panel-body">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+
+                <div class="row-fluid box-section" style="text-align: right;">
+                    <input type="submit" class="btn btn-primary" value="{% trans "Save" %}">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+  $('#id_config, #id_file_type, #id_range').select2();
+</script>
+
+
+{% endblock %}

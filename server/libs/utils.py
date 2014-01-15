@@ -1,6 +1,5 @@
 import hashlib
 
-
 def compute_sign(secret, data):
     """Compute the signature for a dict"""
 
@@ -19,3 +18,4 @@ def compute_sign(secret, data):
         h.update(';')
 
     return h.hexdigest()
+

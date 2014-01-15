@@ -242,6 +242,7 @@ def transactions_list(request):
     if configPk != 'all' or not request.user.is_superuser:
         try:
             config = get_object_or_404(Config, pk=configPk)
+            configPk = int(configPk)
         except:
             config = None
 
