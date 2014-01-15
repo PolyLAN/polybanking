@@ -75,7 +75,7 @@ class PolyBanking():
         data['max_transaction'] = max_transaction
 
         try:
-            result = requests.post(self.server + '/api/transactions/', data=data).json()
+            result = requests.get(self.server + '/api/transactions/', data=data).json()
             if result['result'] != 'ok':
                 return None
 
@@ -94,7 +94,7 @@ class PolyBanking():
         data['reference'] = reference
 
         try:
-            result = requests.post(self.server + '/api/transactions/' + reference + '/', data=data).json()
+            result = requests.get(self.server + '/api/transactions/' + reference + '/', data=data).json()
             if result['result'] != 'ok':
                 return None
 
