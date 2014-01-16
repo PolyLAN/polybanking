@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 import uuid
 import datetime
 import hashlib
-import os
+import random
 
 
 class Config(models.Model):
@@ -78,9 +78,8 @@ class Config(models.Model):
 
         h = hashlib.sha512()
 
-
         for i in range(2):
-            h.update(str(os.random()))
+            h.update(str(random.SystemRandom().random()))
             h.update(str(uuid.uuid4()))
             h.update(str(datetime.datetime.now()))
             h.update(str(self.pk))
