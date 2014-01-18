@@ -114,14 +114,14 @@ def new_key(request, pk, key_type):
     if not config.is_user_allowed(request.user):
         raise Http404
 
-    if key_type == "request":
+    if key_type == "requests":
         config.gen_key_request()
     elif key_type == "ipn":
         config.gen_key_ipn()
     elif key_type == "api":
         config.gen_key_api()
     config.save()
-    
+
     log_message = _(u"A new {} key has been generated".format(key_type))
     ConfigLogs(config=config, user=request.user, text=log_message).save()
 

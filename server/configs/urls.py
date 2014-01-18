@@ -12,6 +12,6 @@ urlpatterns = patterns(
 
     #url(r'^(?P<pk>[0-9]+)/delete/$', 'delete'),
 
-    url(r'^(?P<pk>[0-9]+)/keys/(?P<key_type>(ipn|requests|api))/new/$', 'new_ipn_key'),
+    url(r'^(?P<pk>[0-9]+)/keys/(?P<key_type>(ipn|requests|api))/new/$', 'new_key'),
 
 )

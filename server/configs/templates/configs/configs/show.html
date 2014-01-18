@@ -92,7 +92,7 @@
                 <label>{% trans "Key for requests" %}</label>
                 <p class="form-control-static">
                   <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_request}}">{% trans "Copy" %}</span> {{object.key_request|truncatechars:9}}
-                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_requests_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_key' object.pk 'requests' %}">{% trans "Generate a new one" %}</a>
                 </p>
               </div>
 
@@ -100,7 +100,7 @@
                 <label>{% trans "Key for IPN" %}</label>
                 <p class="form-control-static">
                   <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_ipn}}">{% trans "Copy" %}</span> {{object.key_ipn|truncatechars:9}}
-                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_ipn_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_key' object.pk 'ipn' %}">{% trans "Generate a new one" %}</a>
                 </p>
               </div>
 
@@ -108,7 +108,7 @@
                 <label>{% trans "Key for API" %}</label>
                 <p class="form-control-static">
                   <span class="btn btn-xs btn-default btn-key" x-key="{{object.key_api}}">{% trans "Copy" %}</span> {{object.key_api|truncatechars:9}}
-                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_api_key' object.pk %}">{% trans "Generate a new one" %}</a>
+                  <a class="btn btn-xs btn-danger" onclick="return confirm('{% trans "Are you sure ?" %}');" href="{% url 'configs.views.new_key' object.pk 'api' %}">{% trans "Generate a new one" %}</a>
                 </p>
               </div>
 
