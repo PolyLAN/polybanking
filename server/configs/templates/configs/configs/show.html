@@ -46,6 +46,13 @@
                 <p class="form-control-static">{{object.name}}</p>
               </div>
 
+              {% if object.group %}
+                <div class="form-group">
+                  <label>{% trans "Group" %}</label>
+                  <p class="form-control-static">{{object.group}}</p>
+                </div>
+              {% endif %}
+
               <div class="form-group">
                 <label>{% trans "URL Ipn" %}</label>
                 <p class="form-control-static">{{object.url_ipn}}</p>

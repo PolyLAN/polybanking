@@ -36,3 +36,18 @@ class ExportForm(forms.Form):
             self.fields['config'].queryset = Config.objects.filter(allowed_users=user).order_by('name').all()
         else:
             self.fields['config'].queryset = Config.objects.order_by('name').all()
+
+
+class SummaryForm(forms.Form):
+
+    RANGE_CHOICES = [
+        ('thismonth', _('This month')),
+        ('previousmonth', _('The previous month')),
+        ('sincemonth', _('Since a month')),
+        ('thisyear', _('This year')),
+        ('sinceyear', _('Since a year')),
+    ]
+
+    include_test = forms.BooleanField(help_text=_('Export transactions from all config'), required=False)
+
+    range = forms.ChoiceField(choices=RANGE_CHOICES)

@@ -39,7 +39,7 @@ def edit(request, pk):
     """Edit or create a config"""
 
     try:
-        config = Config.configs.get(pk=pk)
+        config = Config.objects.get(pk=pk)
         create = False
     except:
         config = Config()
@@ -56,14 +56,14 @@ def edit(request, pk):
             config = form.save(commit=False)
 
             if not create:
-                ConfigLogs(config=config, user=request.user, text=_('Config has been updated: ') + config.generate_diff(Config.configs.get(pk=pk))).save()
+                ConfigLogs(config=config, user=request.user, text=_('Config has been updated: ') + config.generate_diff(Config.objects.get(pk=pk))).save()
 
             config.save()  # To use allowed_users
 
             config.allowed_users.clear()
 
             for u in request.POST.get('allowed_users', []):
-                config.allowed_users.add(User.configs.get(pk=u))
+                config.allowed_users.add(User.objects.get(pk=u))
             config.allowed_users.add(request.user)
             config.save()
 

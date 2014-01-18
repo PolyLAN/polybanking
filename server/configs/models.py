@@ -29,6 +29,8 @@ class Config(models.Model):
 
     allowed_users = models.ManyToManyField(User, blank=True)
 
+    group = models.CharField(max_length=255, help_text=_('To group configs in summary'), blank=True, null=True)
+
     def __unicode__(self):
         bonus = u''
 
@@ -51,7 +53,7 @@ class Config(models.Model):
         """Generate diff from this objet an another one (for logs)"""
         retour = u'\n\n'
 
-        for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn'), ('url_back_ok', 'Return URL for success'), ('url_back_err', 'Return URL for error')):
+        for (prop, prop_name) in (('name', 'Name'), ('active', 'Active'), ('admin_enable', 'Admin enable'), ('test_mode', 'Test mode'), ('url_ipn', 'URL Ipn'), ('url_back_ok', 'Return URL for success'), ('url_back_err', 'Return URL for error'), ('group', 'Group')):
             if not other.pk or getattr(self, prop) != getattr(other, prop):
                 retour += unicode(prop_name) + u'=' + unicode(getattr(self, prop))
 
@@ -77,7 +79,6 @@ class Config(models.Model):
         """Return a random key suitable for keys of the model"""
 
         h = hashlib.sha512()
-
 
         for i in range(2):
             h.update(str(os.random()))

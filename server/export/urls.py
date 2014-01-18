@@ -8,5 +8,7 @@ urlpatterns = patterns(
 
     url(r'^$', 'home'),
 
+    url(r'^summary$', 'summary'),
+
 
 )

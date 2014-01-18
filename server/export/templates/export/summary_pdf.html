@@ -1,0 +1,99 @@
+{% load i18n %}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+
+            table tr {
+                border: 1px black solid;
+                padding: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}</h1>
+        <div>
+            {% for group_name, group_data in data.items %}
+                <h2>{{group_name}}</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{% trans "Config" %}</th>
+                            <th>{% trans "From" %}</th>
+                            <th>{% trans "To" %}</th>
+                            <th>{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for configs_data in group_data.0 %}
+
+                            {% for config_data in configs_data %}
+
+                                {% if forloop.first %}
+                                    <tr>
+                                        <td>{{config_data.3.name}} {% if config_data.3.test_mode %}{% trans "(Test mode !)" %}{% endif %}</td>
+                                        <td>{{config_data.0|date:"r"}}</td>
+                                        <td>{{config_data.1|date:"r"}}</td>
+                                        <td>{{config_data.2|floatformat:"2"}} CHF</td>
+                                    </tr>
+                                {% else %}
+
+
+                                    {% if forloop.last %}
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>{{config_data|floatformat:"2"}} CHF</b></td>
+                                        </tr>
+                                    {% else %}
+
+
+                                        <tr>
+                                            <td></td>
+                                            <td>{{config_data.0|date:"r"}}</td>
+                                            <td>{{config_data.1|date:"r"}}</td>
+                                            <td>{{config_data.2|floatformat:"2"}} CHF</td>
+                                        </tr>
+
+                                    {% endif %}
+
+
+                                {% endif %}
+
+                            {% endfor %}
+
+
+                        {% endfor %}
+
+                        <tr style="border: none;"><td></td><td></td><td></td><td>&nbsp;</td></tr>
+
+                        <tr><td><b>{% trans "Total" %}</b></td><td>{{start_date|date:"r"}}</td><td>{{end_date|date:"r"}}</td><td><b><u>{{group_data.1|floatformat:"2"}} CHF</u></b></td></tr>
+
+
+                    </tbody>
+                </table>
+
+            {% endfor %}
+        </div>
+        <div id="footerContent">
+            {%block page_foot%}
+                Page <pdf:pagenumber> - PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}
+            {%endblock%}
+        </div>
+    </body>
+</html>

@@ -5,3 +5,4 @@ celery
 django-celery
 python-dateutil
 PicklingTools
+reportlab
