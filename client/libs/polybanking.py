@@ -32,7 +32,7 @@ class PolyBanking():
 
         return h.hexdigest()
 
-    def new_transation(self, amount, reference, extra_data=''):
+    def new_transaction(self, amount, reference, extra_data=''):
         """Start a new transation, with the specified amount and reference. The reference must be unique.
         Return (Status, the URL where the user should be redirected or None)
         Status can be 'OK', 'KEY_ERROR', 'CONFIG_ERROR', 'AMOUNT_ERROR', 'REFERENCE_ERROR', 'ERROR'"""
@@ -75,7 +75,7 @@ class PolyBanking():
         data['max_transaction'] = max_transaction
 
         try:
-            result = requests.post(self.server + '/api/transactions/', data=data).json()
+            result = requests.get(self.server + '/api/transactions/', params=data).json()
             if result['result'] != 'ok':
                 return None
 
@@ -94,7 +94,7 @@ class PolyBanking():
         data['reference'] = reference
 
         try:
-            result = requests.post(self.server + '/api/transactions/' + reference + '/', data=data).json()
+            result = requests.get(self.server + '/api/transactions/' + reference + '/', params=data).json()
             if result['result'] != 'ok':
                 return None
 
@@ -113,7 +113,7 @@ class PolyBanking():
         data['reference'] = reference
 
         try:
-            result = requests.post(self.server + '/api/transactions/' + reference + '/logs/', data=data).json()
+            result = requests.get(self.server + '/api/transactions/' + reference + '/logs/', params=data).json()
             if result['result'] != 'ok':
                 return None
 

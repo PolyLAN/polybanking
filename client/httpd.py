@@ -1,3 +1,5 @@
+"""This example show a full http server.
+"""
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -22,7 +24,7 @@ def home():
 def start():
     """Start a new paiement"""
 
-    (result, url) = api.new_transation(request.args.get('amount', ''), str(uuid.uuid4()))
+    (result, url) = api.new_transaction(request.args.get('amount', ''), str(uuid.uuid4()))
 
     return render_template('start.html', result=result, url=url)
 
