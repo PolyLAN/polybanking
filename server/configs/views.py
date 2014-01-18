@@ -2,9 +2,18 @@
 
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
-from django.http import Http404
-from django.views.decorators import require_POST, require_GET
-from django.contrib.auth.decorators import login_required
+from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
+from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.utils.encoding import smart_str
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseRedirect
+from django.db import connections
+from django.core.paginator import InvalidPage, EmptyPage, Paginator
+from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,7 +23,6 @@ from django.contrib.auth.models import User
 
 
 @login_required
-@require_GET
 def list(request):
     """Show the list of configs"""
 
@@ -88,7 +96,6 @@ def edit(request, pk):
 
 
 @login_required
-@require_GET
 def show(request, pk):
     """Show a config"""
 
@@ -101,7 +108,6 @@ def show(request, pk):
 
 
 @login_required
-@require_GET
 def new_key(request, pk, key_type):
     config = get_object_or_404(Config, pk=pk)
 
