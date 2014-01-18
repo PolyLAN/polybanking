@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from django.views.decorators import require_GET
+from django.views.decorators import require_POST
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -14,15 +14,15 @@ from paiements.models import Transaction
 
 
 @csrf_exempt
-@require_GET
+@require_POST
 def transactions_list(request):
     """Return the list of transaction"""
-    config_pk = request.GET.get('config_id', -1)
-    secret = request.GET.get('secret', '#')
+    config_pk = request.POST.get('config_id', -1)
+    secret = request.POST.get('secret', '#')
 
     config = get_object_or_404(Config, pk=config_pk, key_api=secret)
     try:
-        max_transaction = int(request.GET['max_transaction'])
+        max_transaction = int(request.POST['max_transaction'])
     except (ValueError, KeyError):
         max_transaction = 100
 
@@ -35,11 +35,11 @@ def transactions_list(request):
 
 
 @csrf_exempt
-@require_GET
+@require_POST
 def transactions_show(request, reference):
     """Return details of a transaction"""
-    config_pk = request.GET.get('config_id', -1)
-    secret = request.GET.get('secret', '#')
+    config_pk = request.POST.get('config_id', -1)
+    secret = request.POST.get('secret', '#')
 
     config = get_object_or_404(Config, pk=config_pk, key_api=secret)
 
@@ -49,11 +49,11 @@ def transactions_show(request, reference):
 
 
 @csrf_exempt
-@require_GET
+@require_POST
 def transactions_show_logs(request, reference):
     """Return logs of a transaction"""
-    config_pk = request.GET.get('config_id', -1)
-    secret = request.GET.get('secret', '#')
+    config_pk = request.POST.get('config_id', -1)
+    secret = request.POST.get('secret', '#')
 
     config = get_object_or_404(Config, pk=config_pk, key_api=secret)
 
