@@ -1,3 +1,4 @@
+django==1.5.5
 south
 django-bootstrap3
 requests
