@@ -108,7 +108,7 @@ def go(request, pk):
     else:
         urlDest = settings.POSTFINANCE_PROD_URL
 
-    TransactionLog(transaction=t, log_type='userForwarded', extra_data=request.META['REMOTE_ADDR']).save()
+    TransactionLog(transaction=t, log_type='userForwarded', extra_data=utils.get_client_ip(request)).save()
 
     t.internal_status = 'fw'
     t.last_userforwarded_date = now()
@@ -156,7 +156,7 @@ def ipn(request):
     # Let's catch the ID
     if not t.postfinance_id:
         t.postfinance_id = request.POST.get('PAYID')
-        TransactionLog(transaction=t, log_type='postfinanceId', extra_data=request.META['REMOTE_ADDR']).save()
+        TransactionLog(transaction=t, log_type='postfinanceId', extra_data=utils.get_client_ip(request)).save()
 
     t.internal_status = 'fb'
     t.last_postfinance_ipn_date = now()
@@ -204,13 +204,13 @@ def return_from_postfinance(request):
     # Let's catch the ID
     if not t.postfinance_id:
         t.postfinance_id = request.GET.get('PAYID')
-        TransactionLog(transaction=t, log_type='postfinanceId', extra_data=request.META['REMOTE_ADDR']).save()
+        TransactionLog(transaction=t, log_type='postfinanceId', extra_data=utils.get_client_ip(request)).save()
 
     t.internal_status = 'fb'
     t.last_user_back_from_postfinance_date = now()
     t.save(update_fields=['internal_status', 'last_user_back_from_postfinance_date', 'postfinance_id'])
 
-    TransactionLog(transaction=t, log_type='userBackFromPostfinance', extra_data=request.META['REMOTE_ADDR']).save()
+    TransactionLog(transaction=t, log_type='userBackFromPostfinance', extra_data=utils.get_client_ip(request)).save()
 
     #  9 or 5 are good signs
     if request.GET.get('STATUS') in ['9', '5']:
