@@ -54,7 +54,8 @@
             <li id="nav-configs"><a href="{% url 'configs.views.list' %}"><i class="fa fa-cogs"></i> {% trans "Configs" %}</a></li>
             <li id="nav-transactions"><a href="{% url 'paiements.views.transactions_list' %}"><i class="fa fa-money"></i> {% trans "Transactions" %}</a></li>
             <li id="nav-export"><a href="{% url 'export.views.home' %}"><i class="fa fa-truck"></i> {% trans "Export" %}</a></li>
-            <li id="nav-summary"><a href="{% url 'export.views.summary' %}"><i class="fa fa-ticket"></i> {% trans "Summary" %}</a></li>
+            {% if user.is_superuser %}<li id="nav-summary"><a href="{% url 'export.views.summary' %}"><i class="fa fa-ticket"></i> {% trans "Summary" %}</a></li>{% endif %}
+            {% if user.is_superuser %}<li id="nav-comparator"><a href="{% url 'comparator.views.home' %}"><i class="fa fa-compress"></i> {% trans "Comparator" %}</a></li>{% endif %}
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">

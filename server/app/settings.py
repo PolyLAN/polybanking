@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'export',
     'configs',
     'paiements',
+    'comparator',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

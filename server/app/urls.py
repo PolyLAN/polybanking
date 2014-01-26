@@ -17,6 +17,7 @@ urlpatterns = patterns(
     url(r'^export/', include('export.urls')),
     url(r'^configs/', include('configs.urls')),
     url(r'^paiements/', include('paiements.urls')),
+    url(r'^comparator/', include('comparator.urls')),
 
     (r'^' + settings.MEDIA_URL[1:] + '(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),  # In prod, use apache !
     (r'^' + settings.STATIC_URL[1:] + '(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),  # In prod, use apache !

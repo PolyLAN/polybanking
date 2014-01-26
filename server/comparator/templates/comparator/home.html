@@ -2,35 +2,35 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block title %}{{block.super}} :: {% trans "Summary" %}{% endblock %}
+{% block title %}{{block.super}} :: {% trans "Compare data from Postfinance" %}{% endblock %}
 
 {% block content %}
 
-<script type="text/javascript">$('#nav-summary').addClass('active');</script>
+<script type="text/javascript">$('#nav-comparator').addClass('active');</script>
 
-<h2>{% trans "Export of data" %}</h2>
+<h2>{% trans "Comprate data from Postfinance" %}</h2>
 
 <ol class="breadcrumb">
   <li><a href="{% url 'main.views.home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
 
-  <li class="active"><i class="fa fa-ticket"></i> {% trans "Summary form" %}</li>
+  <li class="active"><i class="fa fa-compress"></i> {% trans "Comparator" %}</li>
 
 </ol>
 
 <div class="row-fluid">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">{% trans "Summary parameters" %}</h3>
+            <h3 class="panel-title">{% trans "Import file from Postfinance" %}</h3>
         </div>
         <div class="panel-body">
 
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 {% bootstrap_form form %}
 
                 <div class="row-fluid box-section" style="text-align: right;">
-                    <input type="submit" class="btn btn-primary" value="{% trans "Export" %}">
+                    <input type="submit" class="btn btn-primary" value="{% trans "Go" %}">
                 </div>
 
             </form>
@@ -40,7 +40,6 @@
 </div>
 
 <script type="text/javascript">
-  $('#id_range').select2();
 </script>
 
 
