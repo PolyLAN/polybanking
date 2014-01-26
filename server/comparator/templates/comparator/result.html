@@ -99,8 +99,8 @@
                     </thead>
                     <tbody>
                         {% for elem in transactions_diff %}
-                            <tr class="danger">
-                                <td>
+                            <tr class="">
+                                <td {% if elem.0.postfinance_id != elem.0.postfinance_id %}class="danger"{% endif %}>
                                     {% if elem.0.postfinance_id == elem.0.postfinance_id %} 
                                         {{elem.0.postfinance_id}}
                                     {% else %}
@@ -109,14 +109,14 @@
                                 </td>
                                 <td><a href="{% url 'paiements.views.transactions_show' elem.0.pk %}">{{elem.0.reference}}</a></td>
                                 <td><a href="{% url 'configs.views.show' elem.0.config.pk %}">{{elem.0.config|safe}}</a></td>
-                                <td>
+                                <td {% if elem.0.amount_chf != elem.1.montant_chf %}class="danger"{% endif %}>
                                     {% if elem.0.amount_chf == elem.1.montant_chf %} 
                                         {{elem.1.montant_chf|floatformat:"2"}} CHF
                                     {% else %}
                                         <b>{{elem.0.amount_chf|floatformat:"2"}} CHF | {{elem.1.montant_chf|floatformat:"2"}} CHF</b>
                                     {% endif %}
                                 </td>
-                                <td>
+                                <td {% if elem.0.postfinance_status != elem.1.status %}class="danger"{% endif %}>
                                     
                                     {% if elem.0.postfinance_status == elem.1.status %} 
                                         <span class="label label-{{elem.0.postfinance_status_good|yesno:"success,danger"}}">{{elem.0.get_postfinance_status_display}}</span>
