@@ -4,5 +4,5 @@ requests
 celery
 django-celery
 python-dateutil
-PicklingTools
+huTools
 reportlab
