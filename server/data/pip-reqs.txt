@@ -8,3 +8,4 @@ python-dateutil
 huTools
 reportlab
 pisa
+html5lib
