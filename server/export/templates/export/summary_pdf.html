@@ -4,14 +4,14 @@
         <title>PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}</title>
         <style type="text/css">
             @page {
-                size: {{ pagesize }};
+                /*size: {{ pagesize }};*/
                 margin: 1cm;
                 @frame footer {
                     -pdf-frame-content: footerContent;
                     bottom: 0cm;
                     margin-left: 9cm;
                     margin-right: 9cm;
-                    height: 1cm;
+                    height: 2cm;
                 }
             }
 
@@ -23,6 +23,11 @@
     </head>
     <body>
         <h1>PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}</h1>
+
+        <br />
+        <b>{% trans "Only transactions with status=9, Payement requested are displayed and used for computations" %}</b>
+        <br />
+
         <div>
             {% for group_name, group_data in data.items %}
                 <h2>{{group_name}}</h2>
@@ -90,10 +95,55 @@
 
             {% endfor %}
         </div>
+
+        {% if transactions %}
+            
+            {% for group_name, transactions_data in transactions.items %}
+                <pdf:nextpage />    
+                <h2>{{group_name}}</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{% trans "Postfinance ID" %}</th>
+                            <th>{% trans "Internal ID" %}</th>
+                            <th>{% trans "Config/Group" %}</th>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for t in transactions_data %}
+
+                            <tr>
+                                <td>{{t.postfinance_id}}</td>
+                                <td>{{t.reference}} ({{t.pk}})</td>
+                                <td>{{t.config.name}}/{{t.config.group|default:""}}</td>
+                                <td>{{t.creation_date|date}} {{t.creation_date|time}}</td>
+                                <td>{{t.amount_chf|floatformat:"2"}} CHF</td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% endfor %}
+
+
+
+
+        {% endif %}
+
         <div id="footerContent">
-            {%block page_foot%}
-                Page <pdf:pagenumber> - PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}
-            {%endblock%}
+            
+                Page <pdf:pagenumber /> - PolyBanking - {% blocktrans with start_date=start_date|date:"r" end_date=end_date|date:"r" %}Summary from {{start_date}} to {{end_date}}{% endblocktrans %}
+                <br />
+            
+            <b>{% trans "Only transactions with status=9, Payement requested are displayed and used for computations" %}</b>
         </div>
     </body>
 </html>

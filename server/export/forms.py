@@ -48,6 +48,14 @@ class SummaryForm(forms.Form):
         ('sinceyear', _('Since a year')),
     ]
 
+    TRANSACTION_LIST = [
+        ('no', _('No')),
+        ('grouped', _('Grouped')),
+        ('list', _('Yes'))
+    ]
+
     include_test = forms.BooleanField(help_text=_('Export transactions from all config'), required=False)
+
+    transactions = forms.ChoiceField(choices=TRANSACTION_LIST, help_text=_('Include transactions?'))
 
     range = forms.ChoiceField(choices=RANGE_CHOICES)

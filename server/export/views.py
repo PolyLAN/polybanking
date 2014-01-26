@@ -190,6 +190,15 @@ def summary(request):
             #transactions = transactions.filter(creation_date__gte=start_date, creation_date__lt=end_date).all()
 
             data = {}
+            transactions = {}
+
+            if form.cleaned_data['transactions'] == 'list':
+
+                t = Transaction.objects.filter(postfinance_status='9', creation_date__gte=start_date, creation_date__lt=end_date)
+                if not include_test:
+                    t = t.exclude(config__test_mode=True)
+
+                transactions[_('All')] = t.all()
 
             base_config_filter = Config.objects.filter(admin_enable=True).exclude(group=None)
 
@@ -203,6 +212,14 @@ def summary(request):
                 data_group = []
 
                 group_total = 0
+
+                if form.cleaned_data['transactions'] == 'grouped':
+
+                    t = Transaction.objects.filter(config__group=groupName, postfinance_status='9', creation_date__gte=start_date, creation_date__lt=end_date)
+                    if not include_test:
+                        t = t.exclude(config__test_mode=True)
+
+                    transactions[groupName] = t.all()
 
                 for config in base_config_filter.filter(group=groupName).all():
 
@@ -232,7 +249,7 @@ def summary(request):
                 data[groupName] = (data_group, float(group_total) / 100.0)
 
             template = get_template('export/summary_pdf.html')
-            context = Context({'data': data, 'months': months, 'start_date': start_date, 'end_date': end_date})
+            context = Context({'data': data, 'months': months, 'start_date': start_date, 'end_date': end_date, 'transactions': transactions})
             html = template.render(context)
             result = StringIO.StringIO()
 
