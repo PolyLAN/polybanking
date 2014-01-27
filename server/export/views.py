@@ -63,7 +63,7 @@ def home(request):
             if not all_config:
                 transactions = transactions.filter(config=config)
 
-                file_name += transactions.name + u'_'
+                file_name += config.name + u'_'
 
             else:
 
