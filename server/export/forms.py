@@ -5,6 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 from configs.models import Config
 
 
+class ConfigModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name + (' (Test)' if obj.test_mode else '')
+
+
 class ExportForm(forms.Form):
 
     FILE_TYPE_CHOICES = (
@@ -22,7 +27,7 @@ class ExportForm(forms.Form):
     ]
 
     all_config = forms.BooleanField(help_text=_('Export transactions from all configs'), required=False)
-    config = forms.ModelChoiceField(queryset=None, required=False)
+    config = ConfigModelChoiceField(queryset=None, required=False)
 
     file_type = forms.ChoiceField(choices=FILE_TYPE_CHOICES)
 
