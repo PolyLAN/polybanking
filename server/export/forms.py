@@ -22,7 +22,7 @@ class ExportForm(forms.Form):
     ]
 
     all_config = forms.BooleanField(help_text=_('Export transactions from all configs'), required=False)
-    config = forms.ModelChoiceField(queryset=None)
+    config = forms.ModelChoiceField(queryset=None, required=False)
 
     file_type = forms.ChoiceField(choices=FILE_TYPE_CHOICES)
 
@@ -36,6 +36,18 @@ class ExportForm(forms.Form):
             self.fields['config'].queryset = Config.objects.filter(allowed_users=user).order_by('name').all()
         else:
             self.fields['config'].queryset = Config.objects.order_by('name').all()
+
+    def clean(self):
+        cleaned_data = super(ExportForm, self).clean()
+
+        all_config = cleaned_data.get('all_config', False)
+        config = cleaned_data.get('config', None)
+
+        if not all_config and not config:
+            raise forms.ValidationError(_('Please select a config'))
+
+        # Always return the full collection of cleaned data.
+        return cleaned_data
 
 
 class SummaryForm(forms.Form):
