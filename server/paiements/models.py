@@ -2,6 +2,10 @@ from django.db import models
 
 from configs.models import Config
 
+from django.template import defaultfilters
+
+from django.utils.timezone import localtime
+
 
 class Transaction(models.Model):
     """Represent one transation"""
@@ -98,8 +102,14 @@ class Transaction(models.Model):
 
         retour = {}
 
-        for val in ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date']:
+        for val in ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed']:
             retour[val] = str(getattr(self, val))
+
+        for val in ['creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date']:
+            if getattr(self, val):
+                retour[val] = str(localtime(getattr(self, val)))
+            else:
+                retour[val] = ''
 
         for cal, name in [('get_postfinance_status_display', 'postfinance_status_text'), ('get_internal_status_display', 'internal_status_text')]:
             retour[name] = getattr(self, cal)()
@@ -132,7 +142,13 @@ class TransactionLog(models.Model):
 
         retour = {}
 
-        for val in ['when', 'extra_data', 'log_type']:
+        for val in ['when']:
+            if getattr(self, val):
+                retour[val] = str(localtime(getattr(self, val)))
+            else:
+                retour[val] = ''
+
+        for val in ['extra_data', 'log_type']:
             retour[val] = str(getattr(self, val))
 
         for cal, name in [('get_log_type_display', 'log_type_text')]:
