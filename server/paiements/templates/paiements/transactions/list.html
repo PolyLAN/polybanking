@@ -45,19 +45,21 @@
                         <th>{% trans "Postfinance status" %}</th>
                         <th>{% trans "Internal status" %}</th>
                         <th>{% trans "IPN Needed ?" %}</th>
-                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "Init date" %}</th>
+                        <th>{% trans "Last change date" %}</th>
                         <th style="width: 150px;"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for elem in list %}
                         <tr>
-                            <td><a href="{% url 'paiements.views.transactions_show' elem.pk %}">{{elem.reference}}</a></td>
+                            <td><a href="{% url 'paiements.views.transactions_show' elem.pk %}">{{elem.reference}}</a> (polybanking-{{elem.pk}}) ({{elem.postfinance_id|default:"No PostfinanceID"}})</td>
                             <td>{{elem.amount_chf|floatformat:"2"}} CHF</td>
                             <td><span class="label label-{{elem.postfinance_status_good|yesno:"success,danger"}}">{{elem.get_postfinance_status_display}}</span></td>
                             <td><span class="label label-{{elem.internal_status_good|yesno:"success,danger"}}">{{elem.get_internal_status_display}}</span></td>
                             <td><span class="label label-{{elem.ipn_needed|yesno:"danger,success"}}">{{elem.ipn_needed|yesno}}</span></td>
-                            <td>{{elem.creation_date|date}} {{elem.creation_date|time}} ({{elem.creation_date|timesince}})</td>
+                            <td>{{elem.creation_date|date}} {{elem.creation_date|time}}<!-- ({{elem.creation_date|timesince}})--></td>
+                            <td>{{elem.last_postfinance_ipn_date|date}} {{elem.last_postfinance_ipn_date|time}}<!-- ({{elem.last_postfinance_ipn_date|timesince}})--></td>
                             <td>
                                 <a href="{% url 'paiements.views.transactions_show_logs' elem.pk %}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
                             </td>
