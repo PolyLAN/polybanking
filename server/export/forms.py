@@ -24,6 +24,7 @@ class ExportForm(forms.Form):
         ('sincemonth', _('Since a month')),
         ('thisyear', _('This year')),
         ('sinceyear', _('Since a year')),
+        ('custom', _('Custom')),
     ]
 
     all_config = forms.BooleanField(help_text=_('Export transactions from all configs'), required=False)
@@ -32,6 +33,9 @@ class ExportForm(forms.Form):
     file_type = forms.ChoiceField(choices=FILE_TYPE_CHOICES)
 
     range = forms.ChoiceField(choices=RANGE_CHOICES)
+
+    custom_start = forms.DateTimeField(required=False)
+    custom_end = forms.DateTimeField(required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(ExportForm, self).__init__(*args, **kwargs)
@@ -51,7 +55,13 @@ class ExportForm(forms.Form):
         if not all_config and not config:
             raise forms.ValidationError(_('Please select a config'))
 
-        # Always return the full collection of cleaned data.
+        range = cleaned_data.get('range')
+        custom_start = cleaned_data.get('custom_start')
+        custom_end = cleaned_data.get('custom_end')
+
+        if range == 'custom' and (not custom_start or not custom_end):
+            raise forms.ValidationError(_('Please select start and end date'))
+
         return cleaned_data
 
 
@@ -63,6 +73,7 @@ class SummaryForm(forms.Form):
         ('sincemonth', _('Since a month')),
         ('thisyear', _('This year')),
         ('sinceyear', _('Since a year')),
+        ('custom', _('Custom')),
     ]
 
     TRANSACTION_LIST = [
@@ -76,3 +87,18 @@ class SummaryForm(forms.Form):
     transactions = forms.ChoiceField(choices=TRANSACTION_LIST, help_text=_('Include transactions?'))
 
     range = forms.ChoiceField(choices=RANGE_CHOICES)
+
+    custom_start = forms.DateTimeField(required=False)
+    custom_end = forms.DateTimeField(required=False)
+
+    def clean(self):
+        cleaned_data = super(SummaryForm, self).clean()
+
+        range = cleaned_data.get('range')
+        custom_start = cleaned_data.get('custom_start')
+        custom_end = cleaned_data.get('custom_end')
+
+        if range == 'custom' and (not custom_start or not custom_end):
+            raise forms.ValidationError(_('Please select start and end date'))
+
+        return cleaned_data

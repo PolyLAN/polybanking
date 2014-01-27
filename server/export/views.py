@@ -84,6 +84,9 @@ def home(request):
             elif range == 'sinceyear':
                 start_date = now() + relativedelta(years=-1)
                 end_date = now()
+            elif range == 'custom':
+                start_date = form.cleaned_data['custom_start']
+                end_date = form.cleaned_data['custom_end']
 
             transactions = transactions.filter(creation_date__gte=start_date, creation_date__lt=end_date).all()
 
@@ -164,6 +167,9 @@ def summary(request):
             elif range == 'sinceyear':
                 start_date = now() + relativedelta(years=-1)
                 end_date = now()
+            elif range == 'custom':
+                start_date = form.cleaned_data['custom_start']
+                end_date = form.cleaned_data['custom_end']
 
             months = []
 
