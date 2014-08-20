@@ -51,12 +51,12 @@
 
 
               <div class="form-group">
-                <label>{% trans "Test mode ?" %}</label>
+                <label>{% trans "Post finstance status" %}</label>
                 <p class="form-control-static"><span class="label label-{{object.postfinance_status_good|yesno:"success,danger"}}">{{object.get_postfinance_status_display}}</span></p>
               </div>
 
               <div class="form-group">
-                <label>{% trans "Is active ?" %}</label>
+                <label>{% trans "Internal status" %}</label>
                 <p class="form-control-static"><span class="label label-{{object.internal_status_good|yesno:"success,danger"}}">{{object.get_internal_status_display}}</span></p>
               </div>
 
