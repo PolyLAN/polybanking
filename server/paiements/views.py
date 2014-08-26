@@ -72,7 +72,7 @@ def start(request):
         return build_error('REFERENCE_ERROR')
 
     # Create transaction
-    extra_data = request.POST.get('extraData', '')
+    extra_data = request.POST.get('extra_data', '')
 
     t = Transaction(config=config, reference=reference, extra_data=extra_data, amount=amount)
     t.save()
