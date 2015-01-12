@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -31,7 +31,7 @@ def list(request):
     else:
         configs = Config.objects.filter(allowed_users=request.user).order_by('name')
 
-    return render_to_response('configs/configs/list.html', {'list': configs}, context_instance=RequestContext(request))
+    return render(request, 'configs/configs/list.html', {'list': configs})
 
 
 @login_required
@@ -76,7 +76,7 @@ def edit(request, pk):
     else:
         form = ConfigForm(request.user, instance=config)
 
-    return render_to_response('configs/configs/edit.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'configs/configs/edit.html', {'form': form})
 
 
 # @login_required
@@ -104,7 +104,7 @@ def show(request, pk):
     if not object.is_user_allowed(request.user):
         raise Http404
 
-    return render_to_response('configs/configs/show.html', {'object': object}, context_instance=RequestContext(request))
+    return render(request, 'configs/configs/show.html', {'object': object})
 
 
 @login_required
@@ -141,4 +141,4 @@ def show_logs(request, pk):
 
     list = config.configlogs_set.order_by('-when')
 
-    return render_to_response('configs/configs/logs.html', {'object': config, 'list': list}, context_instance=RequestContext(request))
+    return render(request, 'configs/configs/logs.html', {'object': config, 'list': list})

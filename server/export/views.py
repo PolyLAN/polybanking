@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -136,7 +136,7 @@ def home(request):
     else:
         form = ExportForm(request.user)
 
-    return render_to_response('export/home.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'export/home.html', {'form': form})
 
 
 @login_required
@@ -271,4 +271,4 @@ def summary(request):
     else:
         form = SummaryForm()
 
-    return render_to_response('export/summary.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'export/summary.html', {'form': form})

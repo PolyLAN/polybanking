@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -172,9 +172,9 @@ def home(request):
                         for tId in transactions_csv:
                             transactions_only_csv.append(transactions_csv[tId])
 
-            return render_to_response('comparator/result.html', {'result': result, 'transactions_ok': transactions_ok, 'transactions_diff': transactions_diff, 'transactions_only_csv': transactions_only_csv, 'transactions_only_local': transactions_only_local}, context_instance=RequestContext(request))
+            return render(request, 'comparator/result.html', {'result': result, 'transactions_ok': transactions_ok, 'transactions_diff': transactions_diff, 'transactions_only_csv': transactions_only_csv, 'transactions_only_local': transactions_only_local})
 
     else:
         form = CompareForm()
 
-    return render_to_response('comparator/home.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'comparator/home.html', {'form': form})

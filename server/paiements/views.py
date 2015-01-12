@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -114,7 +114,7 @@ def go(request, pk):
     t.last_userforwarded_date = now()
     t.save(update_fields=['internal_status', 'last_userforwarded_date'])
 
-    return render_to_response('paiements/go.html', {'fields': fields, 'urlDest': urlDest}, context_instance=RequestContext(request))
+    return render(request, 'paiements/go.html', {'fields': fields, 'urlDest': urlDest})
 
 
 @csrf_exempt
@@ -252,7 +252,7 @@ def transactions_list(request):
 
     transactions = transactions.order_by('-creation_date').all()
 
-    return render_to_response('paiements/transactions/list.html', {'list': transactions, 'available_configs': available_configs, 'configPk': configPk, 'config': config}, context_instance=RequestContext(request))
+    return render(request, 'paiements/transactions/list.html', {'list': transactions, 'available_configs': available_configs, 'configPk': configPk, 'config': config})
 
 
 @login_required
@@ -266,7 +266,7 @@ def transactions_show_logs(request, pk):
 
     list = object.transactionlog_set.order_by('-when').all()
 
-    return render_to_response('paiements/transactions/logs.html', {'object': object, 'list': list}, context_instance=RequestContext(request))
+    return render(request, 'paiements/transactions/logs.html', {'object': object, 'list': list})
 
 
 @login_required
@@ -278,7 +278,7 @@ def transactions_show(request, pk):
     if not request.user.is_superuser and not request.user in object.allowed_users:
         raise Http404
 
-    return render_to_response('paiements/transactions/show.html', {'object': object}, context_instance=RequestContext(request))
+    return render(request, 'paiements/transactions/show.html', {'object': object})
 
 
 @login_required

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -28,7 +28,7 @@ def list(request):
 
     list = User.objects.order_by('first_name').all()
 
-    return render_to_response('users/users/list.html', {'list': list}, context_instance=RequestContext(request))
+    return render(request, 'users/users/list.html', {'list': list})
 
 
 @login_required
@@ -53,7 +53,7 @@ def edit(request, pk):
     else:
         form = UserForm(instance=object)
 
-    return render_to_response('users/users/edit.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'users/users/edit.html', {'form': form})
 
 
 @login_required
@@ -80,4 +80,4 @@ def show(request, pk):
 
     object = get_object_or_404(User, pk=pk)
 
-    return render_to_response('users/users/show.html', {'object': object}, context_instance=RequestContext(request))
+    return render(request, 'users/users/show.html', {'object': object})
