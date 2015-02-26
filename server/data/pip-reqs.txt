@@ -9,3 +9,4 @@ huTools
 reportlab
 pisa
 html5lib
+raven
