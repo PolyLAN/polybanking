@@ -32,3 +32,9 @@ PSPID_PROD = ''
 CURRENCY = 'CHF'
 
 BROKER_URL = 'amqp://polybanking:%(rabbitmq_password)s@localhost:5672//'
+
+ACTIVATE_RAVEN = True
+
+RAVEN_CONFIG = {
+    'dsn': '%(raven_dsn)',
+}

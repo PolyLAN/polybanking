@@ -172,7 +172,15 @@ TIME_FORMAT = 'H:i:s'
 
 DATETIME_FORMAT = DATE_FORMAT + ' ' + TIME_FORMAT
 
+
+ACTIVATE_RAVEN = False
+
 try:
     from settingsLocal import *
 except ImportError:
     raise
+
+if ACTIVATE_RAVEN:
+    INSTALLED_APPS = INSTALLED_APPS + (
+        'raven.contrib.django.raven_compat',
+)

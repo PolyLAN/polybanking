@@ -189,10 +189,11 @@ def stop_celery():
 @task
 def configure_polybanking():
     """Configure the djagno application"""
-    upload_template('files/settingsLocal.py', '/var/www/git-repo/polybanking/server/app/settingsLocal.py',  {
+    upload_template('files/settingsLocal.py', '/var/www/git-repo/polybanking/server/app/settingsLocal.py', {
         'mysql_password': config.MYSQL_PASSWORD,
         'secret_key': str(uuid.uuid4()),
         'rabbitmq_password': config.RABBITMQ_PASSWORD,
+        'raven_dsn': config.RAVEN_DSN,
         })
 
 
