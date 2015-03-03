@@ -62,7 +62,7 @@ def edit(request, pk):
 
             config.allowed_users.clear()
 
-            for u in request.POST.get('allowed_users', []):
+            for u in request.POST.getlist('allowed_users', []):
                 config.allowed_users.add(User.objects.get(pk=u))
             config.allowed_users.add(request.user)
             config.save()
