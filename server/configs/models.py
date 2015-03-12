@@ -73,7 +73,7 @@ class Config(models.Model):
         elif not self.pk:
             return user.is_staff  # Only staff can create configs
         else:
-            return user in self.allowed_users
+            return user in list(self.allowed_users.all())
 
     def gen_key(self):
         """Return a random key suitable for keys of the model"""
