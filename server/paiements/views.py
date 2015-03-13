@@ -286,7 +286,7 @@ def transactions_send_ipn(request, pk):
 
     object = get_object_or_404(Transaction, pk=pk)
 
-    if not request.user.is_superuser and not request.user in list(object.config.allowed_users.all())
+    if not request.user.is_superuser and not request.user in list(object.config.allowed_users.all()):
         raise Http404
 
     send_ipn.delay(object.pk)
