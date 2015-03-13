@@ -261,7 +261,7 @@ def transactions_show_logs(request, pk):
 
     object = get_object_or_404(Transaction, pk=pk)
 
-    if not request.user.is_superuser and not request.user in object.allowed_users:
+    if not request.user.is_superuser and not request.user in list(object.config.allowed_users.all()):
         raise Http404
 
     list = object.transactionlog_set.order_by('-when').all()
@@ -275,7 +275,7 @@ def transactions_show(request, pk):
 
     object = get_object_or_404(Transaction, pk=pk)
 
-    if not request.user.is_superuser and not request.user in object.allowed_users:
+    if not request.user.is_superuser and not request.user in list(object.config.allowed_users.all()):
         raise Http404
 
     return render(request, 'paiements/transactions/show.html', {'object': object})
@@ -286,7 +286,7 @@ def transactions_send_ipn(request, pk):
 
     object = get_object_or_404(Transaction, pk=pk)
 
-    if not request.user.is_superuser and not request.user in object.allowed_users:
+    if not request.user.is_superuser and not request.user in list(object.config.allowed_users.all())
         raise Http404
 
     send_ipn.delay(object.pk)
