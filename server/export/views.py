@@ -118,7 +118,7 @@ def home(request):
 
                 writer = csv.writer(response)
 
-                headers = ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date', 'postfinance_status_text', 'internal_status_text']
+                headers = ['reference', 'extra_data', 'amount', 'amount_chf', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date', 'postfinance_status_text', 'internal_status_text']
 
                 writer.writerow(headers)
 

@@ -111,7 +111,7 @@ class Transaction(models.Model):
             else:
                 retour[val] = ''
 
-        for cal, name in [('get_postfinance_status_display', 'postfinance_status_text'), ('get_internal_status_display', 'internal_status_text')]:
+        for cal, name in [('get_postfinance_status_display', 'postfinance_status_text'), ('get_internal_status_display', 'internal_status_text'), ('amount_chf', 'amount_chf')]:
             retour[name] = getattr(self, cal)()
 
         return retour
