@@ -198,7 +198,7 @@ def return_from_postfinance(request):
 
     for a in request.GET:
         if a != 'SHASIGN':
-            val = request.POST.get(a)
+            val = request.GET.get(a)
             if val:
                 args[a.upper()] = val
 
