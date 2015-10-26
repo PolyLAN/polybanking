@@ -198,7 +198,9 @@ def return_from_postfinance(request):
 
     for a in request.GET:
         if a != 'SHASIGN':
-            args[a.upper()] = request.GET.get(a)
+            val = request.POST.get(a)
+            if val:
+                args[a.upper()] = val
 
     if request.GET.get('SHASIGN').upper() != postFinance.computeOutSign(args).upper():
         raise Http404
