@@ -162,7 +162,9 @@ def ipn(request):
     t.last_postfinance_ipn_date = now()
     t.postfinance_status = request.POST.get('STATUS')
     t.ipn_needed = True
-    t.save(update_fields=['internal_status', 'last_postfinance_ipn_date', 'postfinance_status', 'ipn_needed', 'postfinance_id'])
+    t.card = request.POST.get('CARDNO', '')
+    t.brand = request.POST.get('BRAND', '')
+    t.save(update_fields=['internal_status', 'last_postfinance_ipn_date', 'postfinance_status', 'ipn_needed', 'postfinance_id', 'brand', 'card'])
 
     TransactionLog(transaction=t, log_type='postfinanceStatus', extra_data=request.POST.get('STATUS')).save()
 

@@ -82,6 +82,9 @@ class Transaction(models.Model):
     last_postfinance_ipn_date = models.DateTimeField(blank=True, null=True)
     last_ipn_date = models.DateTimeField(blank=True, null=True)
 
+    brand = models.CharField(max_length=128, default='')
+    card = models.CharField(max_length=128, default='')
+
     def amount_chf(self):
         """Return the amount in CHF"""
         return self.amount / 100.0
@@ -102,7 +105,7 @@ class Transaction(models.Model):
 
         retour = {}
 
-        for val in ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed']:
+        for val in ['reference', 'extra_data', 'amount', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'brand', 'card']:
             retour[val] = str(getattr(self, val))
 
         for val in ['creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date']:

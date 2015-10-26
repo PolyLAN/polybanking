@@ -101,12 +101,25 @@
                 </div>
               {% endif %}
 
+              {% if object.brand %}
+                <div class="form-group">
+                  <label>{% trans "Brand" %}</label>
+                  <p class="form-control-static">{{object.brand}}</p>
+                </div>
+              {% endif %}
+
+              {% if object.card %}
+                <div class="form-group">
+                  <label>{% trans "Card" %}</label>
+                  <p class="form-control-static">{{object.card}}</p>
+                </div>
+              {% endif %}
           </form>
 
           <div class="row-fluid box-section" style="text-align: right;">
               <a href="{% url 'paiements.views.transactions_list' %}" class="btn btn-default"><i class="glyphicon glyphicon-list"></i> {% trans "Back to the list" %}</a>
               <a href="{% url 'paiements.views.transactions_show_logs' object.pk %}" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i> {% trans "Logs" %}</a>
-          </div>            
+          </div>
 
         </div>
     </div>
