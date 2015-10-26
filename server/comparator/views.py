@@ -75,6 +75,9 @@ def find_dates(csvreader):
                     pass
             else:
 
+                if row[0] == "Id":
+                    continue
+
                 date = parse(row[date_col], dayfirst=True)
 
                 if start_date is None or start_date > date:
