@@ -28,6 +28,7 @@ class ExportForm(forms.Form):
     ]
 
     all_config = forms.BooleanField(help_text=_('Export transactions from all configs'), required=False)
+    only_good = forms.BooleanField(help_text=_('Export only good transactions'), required=False)
     config = ConfigModelChoiceField(queryset=None, required=False)
 
     file_type = forms.ChoiceField(choices=FILE_TYPE_CHOICES)

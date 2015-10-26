@@ -16,6 +16,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Q
 
 from django.utils.timezone import now
 import datetime
@@ -49,6 +50,7 @@ def home(request):
             all_config = form.cleaned_data['all_config']
             range = form.cleaned_data['range']
             file_type = form.cleaned_data['file_type']
+            only_good = form.cleaned_data['only_good']
 
             if not request.user.is_superuser and all_config:
                 raise Http404
@@ -68,6 +70,12 @@ def home(request):
             else:
 
                 file_name += u'ALL_'
+
+            if only_good:
+
+                file_name += u'_Goods_'
+
+                transactions = transactions.filter(Q(postfinance_status__startswith='5') | Q(postfinance_status__startswith='9'))
 
             if range == 'thismonth':
                 start_date = now() + relativedelta(day=1, minute=0, hour=0, second=0, microsecond=0)
