@@ -97,7 +97,7 @@ class Transaction(models.Model):
     def __unicode__(self):
         return self.reference
 
-    def dump_api(self):
+    def dump_api(self, add_config=False):
         """Return values for API"""
 
         retour = {}
@@ -113,6 +113,9 @@ class Transaction(models.Model):
 
         for cal, name in [('get_postfinance_status_display', 'postfinance_status_text'), ('get_internal_status_display', 'internal_status_text'), ('amount_chf', 'amount_chf')]:
             retour[name] = getattr(self, cal)()
+
+        if add_config:
+            retour['config'] = self.config.name
 
         return retour
 

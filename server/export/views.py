@@ -101,7 +101,7 @@ def home(request):
             file_name += start_date.strftime('%Y-%m-%d_%H.%M.%S') + u' - ' + end_date.strftime('%Y-%m-%d_%H.%M.%S')
 
             # Commong for json and xml
-            data = [dict(tr.dump_api().items() + {'logs': [log.dump_api() for log in tr.transactionlog_set.order_by('when').all()]}.items()) for tr in transactions]
+            data = [dict(tr.dump_api(add_config=all_config).items() + {'logs': [log.dump_api() for log in tr.transactionlog_set.order_by('when').all()]}.items()) for tr in transactions]
 
             if file_type == 'json':
 
@@ -128,11 +128,14 @@ def home(request):
 
                 headers = ['reference', 'extra_data', 'amount', 'amount_chf', 'postfinance_id', 'postfinance_status', 'internal_status', 'ipn_needed', 'creation_date', 'last_userforwarded_date', 'last_user_back_from_postfinance_date', 'last_postfinance_ipn_date', 'last_ipn_date', 'postfinance_status_text', 'internal_status_text']
 
+                if all_config:
+                    headers += ['config']
+
                 writer.writerow(headers)
 
                 for tr in transactions:
                     data = []
-                    trdata = tr.dump_api()
+                    trdata = tr.dump_api(add_config=all_config)
 
                     for val in headers:
                         data.append(trdata[val])
